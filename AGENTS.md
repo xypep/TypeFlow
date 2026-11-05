@@ -237,7 +237,7 @@ python -m http.server 8000   # manuell testen → http://localhost:8000
 - Eingefügter Text wird zu einer Zeile zusammengefasst (`TextPrep.clean` ersetzt alle Whitespace-Folgen durch ein Leerzeichen). Zeilenumbrüche als `Enter` werden nicht unterstützt.
 - Die Wortliste richtet sich nach dem Layout (`qwertz` → Deutsch, `qwerty` → Englisch). Die Umlaut-Lektion gibt es nur bei QWERTZ.
 - Ohne Internet werden die Systemschriften statt Inter / JetBrains Mono genutzt.
-- Kein GitHub-Release vorhanden. Im README steht der Platzhalter `[RELEASE-LINK]`.
+- Releases: `v1.0.0` ist das erste. Für ein neues Release erst `npm run build`, die `version` in `package.json` und die Badge im README anheben, dann ein Release mit `dist/typeflow.html` als Asset erstellen.
 - Die Roadmap im README enthält noch die Platzhalter `[GEPLANTES FEATURE]`.
 
 ### Mögliche nächste Schritte (Ideen, nicht beauftragt)
@@ -249,7 +249,6 @@ Erst mit dem Nutzer abstimmen, bevor etwas davon umgesetzt wird:
 - **Zeilenumbrüche optional** als `Enter`-Zeichen behalten.
 - **Deutsche UI** (i18n-Objekt für alle Strings).
 - **GitHub Action**, die bei jedem Push `npm test` ausführt und prüft, ob `dist/typeflow.html` aktuell ist.
-- **GitHub Release** mit `dist/typeflow.html` als Anhang.
 - **Fonts lokal einbetten** (Base64 im Single-File), damit es offline gleich aussieht. Achtung: Dateigröße.
 
 ---

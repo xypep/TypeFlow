@@ -68,13 +68,13 @@ Ein Tipptrainer im Browser: beliebigen Text einfügen (z. B. eine Wikipedia-Seit
 
 ## Installation
 
-### Option A – Einzelne HTML-Datei herunterladen (empfohlen)
+### Option A – Release herunterladen (empfohlen)
 
-1. [`dist/typeflow.html`](dist/typeflow.html) öffnen und auf „Download raw file“ klicken
+1. Neueste Version unter [Releases](https://github.com/xypep/TypeFlow/releases/latest) herunterladen, direkt: [`typeflow.html`](https://github.com/xypep/TypeFlow/releases/latest/download/typeflow.html)
 2. Die Datei in einen eigenen Ordner legen, z. B. `MeinTypeFlow/`
 3. Die Datei per Doppelklick in Chrome oder Edge öffnen
 
-Ein GitHub-Release gibt es noch nicht: [RELEASE-LINK]
+Dieselbe Datei liegt auch im Repo unter [`dist/typeflow.html`](dist/typeflow.html).
 
 ### Option B – Aus dem Quellcode
 
@@ -208,6 +208,7 @@ Fehlende Felder werden beim Laden mit Standardwerten ergänzt, ältere Dateien f
 - [x] Dark- und Light-Theme
 - [x] Speicherung im Ordner, Export/Import
 - [x] Single-File-Version
+- [x] GitHub Release v1.0.0
 - [ ] [GEPLANTES FEATURE]
 - [ ] [GEPLANTES FEATURE]
 
