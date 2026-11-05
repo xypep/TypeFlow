@@ -5,6 +5,7 @@
  *
  *   npm i -D playwright && npx playwright install chromium
  *   npm run test:e2e            (SCREENSHOTS=1 to save screenshots)
+ *   npm run test:e2e:single     same test against dist/typeflow.html via file://
  */
 const http = require('node:http');
 const fs = require('node:fs');
@@ -27,8 +28,12 @@ function serve() {
 }
 
 (async () => {
-  const server = await serve();
-  const url = `http://localhost:${server.address().port}/index.html`;
+  // E2E_TARGET=single → test the single-file build opened like a double-click (file://)
+  const single = process.env.E2E_TARGET === 'single';
+  const server = single ? null : await serve();
+  const url = single
+    ? 'file://' + require('../../scripts/build-single.js').build()
+    : `http://localhost:${server.address().port}/index.html`;
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 860 } });
   const errors = [];
@@ -59,6 +64,7 @@ function serve() {
 
   try {
     await page.goto(url);
+    assert.ok(await page.evaluate(() => window.isSecureContext), 'secure context (needed for folder access)');
     await shot('01-login');
     await page.click('#btn-folder');
     await page.waitForSelector('#app:not([hidden])');
@@ -74,6 +80,8 @@ function serve() {
     await page.keyboard.type(target.slice(24), { delay: 25 });
     await page.waitForSelector('#train-result:not([hidden])');
     await shot('04-result');
+    // saving is debounced (400 ms) → wait until the session reached the file
+    await page.waitForFunction(() => JSON.parse(window.__files['typeflow-db.json'] || '{}').sessions?.length === 1, null, { timeout: 3000 });
     const db = await page.evaluate(() => JSON.parse(window.__files['typeflow-db.json']));
     assert.equal(db.sessions.length, 1, 'session saved to the folder DB');
     assert.equal(db.sessions[0].errors, 1);
@@ -108,12 +116,12 @@ function serve() {
     await shot('09-stats-light');
 
     assert.deepEqual(errors, [], 'no page errors');
-    console.log('✔ e2e smoke test passed');
+    console.log(`✔ e2e smoke test passed (${single ? 'single file, file://' : 'sources, http'})`);
   } catch (err) {
     console.error('✖ e2e smoke test failed:', err.message);
     process.exitCode = 1;
   } finally {
     await browser.close();
-    server.close();
+    server?.close();
   }
 })();

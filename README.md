@@ -35,6 +35,24 @@ npm start
 
 Then open <http://localhost:8000> in **Chrome or Edge**.
 
+### Single-file version (one HTML + your DB)
+
+[`dist/typeflow.html`](dist/typeflow.html) contains the whole app (all CSS and JS inlined) in one file. Copy it anywhere and **double-click it**. It opens in Chrome or Edge without a server, and folder storage works over `file://`. Your data stays in `typeflow-db.json` in the folder you pick:
+
+```
+MyTypeFlow/
+├─ typeflow.html       ← the app
+└─ typeflow-db.json    ← created on first login if you pick this folder
+```
+
+Fonts load from Google Fonts when you're online. Offline, the system fonts are used.
+
+The file is generated, so don't edit it by hand. After changing the sources, rebuild it:
+
+```bash
+npm run build
+```
+
 ### Login / storage
 
 On the first screen you choose where your data lives:
@@ -49,6 +67,7 @@ You can switch storage at any time via the chip in the top-right corner or under
 ```
 typeflow/
 ├─ docs/               # screenshots for this README
+├─ dist/typeflow.html  # generated single-file build (npm run build)
 ├─ index.html          # markup for login + all four tabs
 ├─ css/styles.css      # theme tokens (dark default, light) + components
 ├─ js/
@@ -62,6 +81,7 @@ typeflow/
 │  ├─ stats.js         # Statistics tab
 │  ├─ settings.js      # Settings tab (schema-driven)
 │  └─ app.js           # login, routing, keyboard input, session recording
+├─ scripts/build-single.js  # inlines css + js into dist/typeflow.html
 └─ tests/
    ├─ *.test.js        # unit tests (node:test, no dependencies)
    └─ e2e/smoke.js     # Playwright end-to-end smoke test
@@ -102,7 +122,7 @@ Unit tests use Node's built-in test runner (Node 18+), with no install needed:
 npm test
 ```
 
-They load the browser scripts into a `vm` context and cover text cleanup, layouts and key mapping, the typing engine (WPM, accuracy, backspace, strict and time mode, with a fake clock), DB migration and the lesson generator (only keys taught so far appear).
+They load the browser scripts into a `vm` context and cover the single-file build, text cleanup, layouts and key mapping, the typing engine (WPM, accuracy, backspace, strict and time mode, with a fake clock), DB migration and the lesson generator (only keys taught so far appear).
 
 End-to-end smoke test (starts its own server, mocks the folder picker):
 
@@ -116,6 +136,12 @@ npx playwright install chromium
 
 ```bash
 npm run test:e2e
+```
+
+Run the same test against the single-file build (opened via `file://`):
+
+```bash
+npm run test:e2e:single
 ```
 
 Set `SCREENSHOTS=1` to save screenshots to `tests/e2e/screenshots/`.

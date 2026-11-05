@@ -1,0 +1,2461 @@
+<!doctype html>
+<!-- TypeFlow single-file build · generated 2026-11-05 from index.html — edit the sources, then run "npm run build" -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+/* =========================================================
+   TypeFlow — styles
+   One token set per theme. Every surface (nav, main card, side panel,
+   keyboard) draws from the same family, so the themes never mix.
+   Dark = default (:root). Light = [data-theme-resolved="light"].
+   ========================================================= */
+:root {
+  /* surfaces */
+  --bg: #141212;
+  --surface: #1d1a1a;       /* nav, cards, panel */
+  --surface-2: #262222;     /* tiles, inputs, keys */
+  --surface-3: #312c2c;     /* hover / pressed */
+  --line: #2f2a2a;
+  --line-strong: #403939;
+  /* text */
+  --text: #ede8e5;
+  --muted: #918884;
+  --untyped: #5e5754;
+  /* accent & states */
+  --accent: #f0743a;
+  --accent-hover: #ff8650;
+  --accent-soft: rgba(240, 116, 58, .14);
+  --accent-glow: rgba(240, 116, 58, .07);
+  --on-accent: #fff;
+  --ok: #5cc27a;
+  --err: #ff6b5e;
+  --err-soft: rgba(255, 107, 94, .16);
+  /* keyboard finger tints (pinky, ring, middle, index, thumb) — muted so the accent target stands out */
+  --f0: #2c2633; --f1: #232a33; --f2: #232d27; --f3: #332a22; --f4: #2a2626;
+  --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 10px 30px rgba(0,0,0,.25);
+  /* type */
+  --radius: 18px;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --type-size: 26px;
+  color-scheme: dark;
+}
+:root[data-theme-resolved="light"] {
+  --bg: #f2efec;
+  --surface: #ffffff;
+  --surface-2: #f5f2ef;
+  --surface-3: #ebe6e2;
+  --line: #e6e0db;
+  --line-strong: #d6cec8;
+  --text: #1f1b1a;
+  --muted: #7b726d;
+  --untyped: #b5ada8;
+  --accent: #e0601c;
+  --accent-hover: #ec7232;
+  --accent-soft: rgba(224, 96, 28, .11);
+  --accent-glow: rgba(224, 96, 28, .06);
+  --ok: #2f8a4a;
+  --err: #d1352b;
+  --err-soft: rgba(209, 53, 43, .12);
+  --f0: #efe8f7; --f1: #e7eff8; --f2: #e6f3ea; --f3: #fbeedf; --f4: #f1eeec;
+  --shadow: 0 1px 2px rgba(60,40,30,.04), 0 8px 24px rgba(60,40,30,.06);
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: radial-gradient(1100px 480px at 50% -180px, var(--accent-glow), transparent 70%), var(--bg);
+  background-attachment: fixed;
+  color: var(--text);
+  font: 15px/1.5 var(--font-ui);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+[hidden] { display: none !important; }
+h1 { font-size: 22px; margin: 0; font-weight: 600; letter-spacing: -.01em; }
+h2 { font-size: 15px; margin: 0 0 16px; font-weight: 600; }
+h3 { font-size: 14px; margin: 0 0 12px; font-weight: 600; }
+a { color: var(--accent); }
+code, kbd { font-family: var(--font-mono); font-size: .9em; }
+kbd {
+  padding: 1px 6px; border: 1px solid var(--line-strong); border-bottom-width: 2px;
+  border-radius: 6px; background: var(--surface-2); color: var(--text);
+}
+.muted { color: var(--muted); }
+.hint { color: var(--muted); font-size: 12.5px; margin: 8px 0 0; }
+.center { text-align: center; }
+.label {
+  display: block; font-size: 11.5px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); margin-bottom: 8px; font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font: inherit; font-weight: 500; cursor: pointer; color: var(--text);
+  border: 1px solid transparent; border-radius: 11px; padding: 9px 16px; background: transparent;
+  transition: background .15s, border-color .15s, color .15s, transform .1s;
+}
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn-primary { background: var(--accent); color: var(--on-accent); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+.btn-primary kbd { background: transparent; color: var(--on-accent); border-color: rgba(255,255,255,.45); }
+.btn-ghost { border-color: var(--line-strong); background: var(--surface-2); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.btn-danger { border-color: var(--err); color: var(--err); }
+.btn-danger:hover { background: var(--err-soft); }
+.btn-lg { padding: 13px 22px; font-size: 16px; }
+.btn-sm { padding: 5px 11px; font-size: 13px; }
+.btn-block { width: 100%; margin-top: 18px; padding: 12px; font-size: 16px; }
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* ---------- Logo ---------- */
+.logo {
+  font-size: 21px; font-weight: 600; color: var(--accent); letter-spacing: -.01em;
+  text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px;
+}
+.logo-lg { font-size: 44px; text-underline-offset: 10px; text-decoration-thickness: 3px; }
+
+/* ---------- Login ---------- */
+.login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.login-card {
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: 24px; padding: 44px 40px; max-width: 460px; width: 100%; text-align: center;
+}
+.login-sub { color: var(--muted); margin: 22px 0 28px; }
+.login-sub code { color: var(--text); white-space: nowrap; }
+.login-actions { display: flex; flex-direction: column; gap: 10px; }
+.login-actions .btn-ghost { color: var(--muted); }
+.login-msg { color: var(--accent); min-height: 1.5em; margin: 16px 0 0; font-size: 13.5px; }
+
+/* ---------- App shell & nav ---------- */
+.app { padding: 12px; max-width: 1400px; margin: 0 auto; }
+.nav {
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: 16px; height: 58px; display: flex; align-items: center; padding: 0 10px 0 22px; gap: 4px;
+}
+.nav .logo { margin-right: 28px; }
+.nav-link {
+  color: var(--muted); text-decoration: none; font-weight: 500;
+  padding: 7px 16px; border-radius: 10px; transition: color .15s, background .15s;
+}
+.nav-link:hover { color: var(--text); background: var(--surface-2); }
+.nav-link.active { color: var(--accent); background: var(--accent-soft); }
+.nav-storage {
+  margin-left: auto; font: 12.5px var(--font-ui); color: var(--muted); background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer;
+  max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.nav-storage:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- Layout ---------- */
+.page { display: none; padding-top: 12px; }
+.page.active { display: block; animation: fade .18s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: 12px; align-items: start; }
+.card, .panel {
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+.card { padding: 28px 30px; min-height: 560px; }
+.panel { padding: 22px; position: sticky; top: 12px; }
+.main-head { display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; margin-bottom: 20px; }
+
+/* ---------- Segmented control ---------- */
+.seg { display: flex; background: var(--surface-2); border: 1px solid var(--line); border-radius: 11px; padding: 3px; gap: 2px; }
+.seg button {
+  flex: 1; font: inherit; font-size: 13.5px; font-weight: 500; border: 0; background: none; white-space: nowrap;
+  color: var(--muted); padding: 7px 6px; border-radius: 8px; cursor: pointer; transition: color .15s, background .15s;
+}
+.seg button:hover { color: var(--text); }
+.seg button.on { background: var(--accent); color: var(--on-accent); }
+.seg-sm button { font-size: 12.5px; padding: 5px 10px; }
+.card .seg button { flex: none; padding-left: 12px; padding-right: 12px; }
+.field { margin-bottom: 20px; }
+.check { display: flex; align-items: center; gap: 10px; font-size: 14px; margin: 7px 0; cursor: pointer; }
+.check input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+/* ---------- Training idle ---------- */
+.source-text {
+  width: 100%; min-height: 360px; resize: vertical; border-radius: 14px;
+  border: 1.5px dashed var(--line-strong); background: var(--surface-2); color: var(--text);
+  padding: 18px 20px; font: 15px/1.65 var(--font-ui); outline: none; transition: border-color .15s;
+}
+.source-text::placeholder { color: var(--muted); }
+.source-text:focus { border-color: var(--accent); border-style: solid; }
+.saved-row { margin-top: 18px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 6px; max-width: 260px; font: inherit;
+  border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px;
+  padding: 4px 6px 4px 12px; font-size: 13px; cursor: pointer; color: var(--text);
+}
+button.chip { padding-right: 12px; }
+.chip:hover { border-color: var(--accent); }
+.chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chip .x { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 15px; line-height: 1; padding: 0 4px; border-radius: 50%; }
+.chip .x:hover { color: var(--err); }
+
+/* ---------- Typing area ---------- */
+.typing { position: relative; margin: 26px 0 10px; cursor: text; }
+.typing-meta { display: flex; justify-content: space-between; color: var(--muted); font: 500 14px var(--font-mono); margin-bottom: 16px; }
+.typing-meta .big { color: var(--accent); font-size: 22px; }
+.typing-viewport { overflow: hidden; position: relative; }
+.typing-inner {
+  position: relative; font-family: var(--font-mono); font-size: var(--type-size);
+  line-height: 1.7; color: var(--untyped); transition: transform .15s ease;
+}
+.word { white-space: nowrap; }
+.ch { transition: color .05s; }
+.ch.ok { color: var(--text); }
+.ch.bad { color: var(--err); background: var(--err-soft); border-radius: 3px; }
+.caret {
+  position: absolute; left: 0; top: 0; width: 2px; background: var(--accent);
+  border-radius: 2px; pointer-events: none; transition: left .08s linear, top .08s linear;
+  animation: blink 1.05s step-end infinite; box-shadow: 0 0 10px var(--accent-soft);
+}
+.caret.typing-now { animation: none; }
+.caret.block { width: .6em; opacity: .35; }
+.caret.underline { height: 3px !important; width: .6em; }
+.no-smooth .caret { transition: none; }
+@keyframes blink { 50% { opacity: 0; } }
+.focus-hint {
+  position: absolute; inset: -8px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--surface) 75%, transparent); backdrop-filter: blur(4px);
+  color: var(--muted); font-weight: 500; border-radius: 12px; z-index: 2;
+}
+.typing.single .typing-inner { text-align: center; }
+.typing.single .word, .typing.single .sp { display: none; }
+.typing.single .word.current { display: inline; }
+.typing.single .next-word { text-align: center; color: var(--untyped); font: 500 18px var(--font-mono); margin-top: 6px; min-height: 1.5em; }
+.shake { animation: shake .18s; }
+@keyframes shake { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+
+/* ---------- Keyboard ---------- */
+.kb-wrap { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
+.kb { display: flex; flex-direction: column; gap: 6px; align-items: center; user-select: none; }
+.kb-row { display: flex; gap: 6px; }
+.key {
+  --w: 1; width: calc(var(--w) * 46px); height: 44px; border-radius: 9px;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--line-strong);
+  border-bottom-width: 3px; display: grid; place-items: center;
+  font: 500 14px var(--font-mono); position: relative; transition: transform .06s, background .12s, color .12s;
+}
+.kb.fingers .key[data-f="0"], .kb.fingers .key[data-f="7"] { background: var(--f0); }
+.kb.fingers .key[data-f="1"], .kb.fingers .key[data-f="6"] { background: var(--f1); }
+.kb.fingers .key[data-f="2"], .kb.fingers .key[data-f="5"] { background: var(--f2); }
+.kb.fingers .key[data-f="3"], .kb.fingers .key[data-f="4"] { background: var(--f3); }
+.kb.fingers .key[data-f="8"] { background: var(--f4); }
+.key.home::after { content: ""; position: absolute; bottom: 7px; width: 10px; height: 2px; background: currentColor; border-radius: 2px; opacity: .5; }
+.key.target {
+  background: var(--accent) !important; color: var(--on-accent); border-color: var(--accent);
+  transform: translateY(-2px); box-shadow: 0 6px 16px var(--accent-soft);
+}
+.key.miss { background: var(--err) !important; color: #fff; }
+.key.mod { font-size: 11px; font-family: var(--font-ui); color: var(--muted); }
+.key.mod.target { color: var(--on-accent); }
+.kb-legend { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 16px; font-size: 12.5px; color: var(--muted); }
+.kb-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 4px; margin-right: 6px; vertical-align: -1px; border: 1px solid var(--line-strong); }
+.kb-finger { text-align: center; margin-top: 10px; font-size: 14px; color: var(--muted); min-height: 1.6em; }
+.kb-finger b { color: var(--accent); font-weight: 600; }
+
+/* ---------- Live stats (panel) ---------- */
+.live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.live-tile { background: var(--surface-2); border: 1px solid var(--line); border-radius: 13px; padding: 12px 14px; }
+.live-tile .v { font: 700 28px/1.1 var(--font-mono); }
+.live-tile .v.accent { color: var(--accent); }
+.live-tile .k { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.live-tile.wide { grid-column: span 2; }
+.progress { height: 6px; border-radius: 6px; background: var(--surface-3); overflow: hidden; margin-top: 10px; }
+.progress > div { height: 100%; background: var(--accent); width: 0; transition: width .2s; border-radius: 6px; }
+
+/* ---------- Results ---------- */
+.result-hero { display: flex; gap: 44px; align-items: flex-end; flex-wrap: wrap; margin: 6px 0 26px; }
+.hero-num .v { font: 700 64px/1 var(--font-mono); color: var(--accent); }
+.hero-num .k { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; margin-top: 8px; font-weight: 600; }
+.hero-num.sm .v { font-size: 36px; color: var(--text); }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.stat-tile { background: var(--surface-2); border: 1px solid var(--line); border-radius: 13px; padding: 13px 15px; }
+.stat-tile .v { font: 600 22px/1.2 var(--font-mono); }
+.stat-tile .k { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-weight: 600; font-size: 14px; }
+.badge.pass { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok); }
+.badge.fail { background: var(--err-soft); color: var(--err); }
+.missed { display: flex; gap: 8px; flex-wrap: wrap; }
+.missed kbd { font-size: 15px; padding: 3px 9px; }
+.missed small { color: var(--muted); margin-left: 4px; }
+
+/* ---------- Learn ---------- */
+.lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-top: 22px; }
+.lesson {
+  text-align: left; font: inherit; color: var(--text); cursor: pointer;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 15px; padding: 15px 16px;
+  transition: border-color .15s, transform .15s, background .15s;
+  display: flex; flex-direction: column;
+}
+.lesson:hover { border-color: var(--accent); transform: translateY(-2px); }
+.lesson .n { font: 600 12px var(--font-mono); color: var(--muted); display: flex; justify-content: space-between; }
+.lesson .n .done { color: var(--ok); }
+.lesson .t { font-weight: 600; margin: 5px 0 10px; }
+.lesson .keys { display: flex; gap: 4px; flex-wrap: wrap; min-height: 26px; }
+.lesson .keys kbd { font-size: 12px; background: var(--surface); }
+.lesson .best { font-size: 12px; color: var(--muted); margin-top: auto; padding-top: 10px; font-family: var(--font-mono); }
+.lesson.completed { border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.panel-section { margin-bottom: 22px; }
+.panel-section:last-child { margin-bottom: 0; }
+.panel-section p { color: var(--muted); font-size: 14px; margin: 0 0 8px; }
+.panel-section p b { color: var(--text); }
+
+/* ---------- Statistics ---------- */
+.stats-card, .settings-card { min-height: 0; }
+.filters { display: flex; gap: 10px; flex-wrap: wrap; }
+.kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 22px; }
+.kpis .stat-tile .v { font-size: 26px; }
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+.chart-box { background: var(--surface-2); border: 1px solid var(--line); border-radius: 15px; padding: 16px 18px; min-width: 0; }
+.chart-box h3 { display: flex; justify-content: space-between; gap: 10px; }
+.chart-box h3 small { color: var(--muted); font-weight: 400; }
+.chart { position: relative; width: 100%; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart .grid line { stroke: var(--line-strong); stroke-width: 1; opacity: .6; }
+.chart .axis text { fill: var(--muted); font: 11px var(--font-ui); }
+.chart .series { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.chart .area { fill: var(--accent-soft); }
+.chart .dot { fill: var(--accent); stroke: var(--surface-2); stroke-width: 2; }
+.chart .cross { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart .err-mark { fill: var(--err); }
+.empty { color: var(--muted); text-align: center; padding: 50px 10px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+tbody tr:hover td { background: var(--surface-2); }
+td.num, th.num { text-align: right; font-family: var(--font-mono); }
+.kb.heat .key { cursor: default; }
+.heat-scale { display: flex; align-items: center; gap: 8px; justify-content: center; margin-top: 14px; font-size: 12px; color: var(--muted); }
+.heat-scale .bar { width: 140px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--surface), var(--accent)); border: 1px solid var(--line-strong); }
+
+/* ---------- Settings ---------- */
+.set-section { border-top: 1px solid var(--line); padding: 22px 0; display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+.set-section:first-of-type { border-top: 0; }
+.set-section > h3 { margin: 4px 0 0; }
+.set-section > h3 small { display: block; color: var(--muted); font-weight: 400; margin-top: 4px; font-size: 13px; }
+.set-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px 0; flex-wrap: wrap; }
+.set-row > span { font-weight: 500; }
+.set-row > span small { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+.input {
+  font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--line-strong);
+  border-radius: 10px; padding: 8px 12px; min-width: 220px; outline: none;
+}
+.input::placeholder { color: var(--muted); }
+.input:focus { border-color: var(--accent); }
+input[type="range"] { accent-color: var(--accent); width: 200px; }
+.switch { position: relative; width: 42px; height: 24px; flex: none; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.switch span { position: absolute; inset: 0; background: var(--surface-3); border: 1px solid var(--line-strong); border-radius: 24px; cursor: pointer; transition: background .15s; }
+.switch span::before { content: ""; position: absolute; width: 18px; height: 18px; left: 2px; top: 2px; background: #fff; border-radius: 50%; transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.3); }
+.switch input:checked + span { background: var(--accent); border-color: var(--accent); }
+.switch input:checked + span::before { transform: translateX(18px); }
+
+/* ---------- Tooltip / toast ---------- */
+.tooltip {
+  position: fixed; z-index: 50; pointer-events: none; background: var(--surface-3); color: var(--text);
+  border: 1px solid var(--line-strong); font-size: 12.5px; padding: 7px 10px; border-radius: 9px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3); white-space: nowrap;
+}
+
+.key-sink { position: fixed; opacity: 0; left: -1000px; top: 0; width: 10px; height: 10px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 960px) {
+  .layout { grid-template-columns: 1fr; }
+  .panel { position: static; }
+  .chart-grid { grid-template-columns: 1fr; }
+  .set-section { grid-template-columns: 1fr; gap: 6px; }
+}
+@media (max-width: 640px) {
+  .app { padding: 8px; }
+  .nav { padding: 0 8px 0 14px; gap: 0; overflow-x: auto; }
+  .nav .logo { margin-right: 6px; font-size: 18px; }
+  .nav-link { font-size: 14px; padding: 6px 9px; }
+  .nav-storage { display: none; }
+  .card { padding: 18px 16px; min-height: 0; }
+  .key { width: calc(var(--w) * 22px); height: 30px; font-size: 10px; border-radius: 5px; }
+  .kb, .kb-row { gap: 3px; }
+  .hero-num .v { font-size: 46px; }
+  .input { min-width: 0; width: 100%; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- ============ LOGIN ============ -->
+  <section id="login" class="login">
+    <div class="login-card">
+      <div class="logo logo-lg">TypeFlow</div>
+      <p class="login-sub">Your progress lives in a folder you choose.<br>Pick one — TypeFlow creates or loads <code>typeflow-db.json</code> there.</p>
+      <div class="login-actions">
+        <button id="btn-resume" class="btn btn-primary btn-lg" hidden></button>
+        <button id="btn-folder" class="btn btn-primary btn-lg">Choose folder</button>
+        <button id="btn-local" class="btn btn-ghost">Continue without folder (browser storage)</button>
+      </div>
+      <p id="login-msg" class="login-msg"></p>
+    </div>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <div id="app" class="app" hidden>
+    <nav class="nav">
+      <a href="#start" class="logo">TypeFlow</a>
+      <a href="#learn" class="nav-link" data-route="learn">Learn</a>
+      <a href="#start" class="nav-link" data-route="start">Start</a>
+      <a href="#stats" class="nav-link" data-route="stats">Statistics</a>
+      <a href="#settings" class="nav-link" data-route="settings">Settings</a>
+      <button id="nav-storage" class="nav-storage" title="Storage location — click to switch"></button>
+    </nav>
+
+    <!-- Hidden input that receives all keystrokes while a typing session runs (handles dead keys / IME) -->
+    <textarea id="key-sink" class="key-sink" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Typing input"></textarea>
+
+    <!-- ---------- START / TRAINING ---------- -->
+    <section class="page" data-page="start">
+      <div class="layout">
+        <main class="main card">
+          <!-- idle: paste text -->
+          <div id="train-idle">
+            <div class="main-head">
+              <h1>Training</h1>
+              <span id="text-info" class="muted"></span>
+            </div>
+            <textarea id="source-text" class="source-text" placeholder="Paste anything here — a Wikipedia article, a news story, your own text…&#10;&#10;Then pick a mode on the right and press Start."></textarea>
+            <div class="saved-row">
+              <span class="label">Saved texts</span>
+              <div id="saved-texts" class="chips"></div>
+            </div>
+          </div>
+          <!-- running -->
+          <div id="train-run" hidden>
+            <div id="train-typing"></div>
+            <div id="train-keyboard" class="kb-wrap"></div>
+          </div>
+          <!-- results -->
+          <div id="train-result" hidden></div>
+        </main>
+
+        <aside class="panel">
+          <div id="train-panel-settings">
+            <h2>Session</h2>
+            <div class="field">
+              <span class="label">Mode</span>
+              <div class="seg" id="mode-seg">
+                <button data-mode="full">Full text</button>
+                <button data-mode="random">Random</button>
+                <button data-mode="single">Single</button>
+                <button data-mode="time">Time</button>
+              </div>
+              <p id="mode-desc" class="hint"></p>
+            </div>
+            <div class="field" id="opt-words">
+              <span class="label">Words</span>
+              <div class="seg seg-sm" id="words-seg">
+                <button data-v="10">10</button><button data-v="25">25</button><button data-v="50">50</button><button data-v="100">100</button>
+              </div>
+            </div>
+            <div class="field" id="opt-time">
+              <span class="label">Duration</span>
+              <div class="seg seg-sm" id="time-seg">
+                <button data-v="15">15s</button><button data-v="30">30s</button><button data-v="60">60s</button><button data-v="120">120s</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label">Text cleanup</span>
+              <label class="check"><input type="checkbox" id="opt-normalize"> Normalize quotes &amp; dashes</label>
+              <label class="check"><input type="checkbox" id="opt-refs"> Remove references [1]</label>
+              <label class="check"><input type="checkbox" id="opt-punct"> Remove punctuation</label>
+              <label class="check"><input type="checkbox" id="opt-lower"> Lowercase</label>
+            </div>
+            <button id="btn-start" class="btn btn-primary btn-block">Start</button>
+            <p class="hint center">Tab = restart · Esc = stop</p>
+          </div>
+          <div id="train-panel-live" hidden></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ---------- LEARN ---------- -->
+    <section class="page" data-page="learn">
+      <div class="layout">
+        <main class="main card">
+          <div id="learn-list">
+            <div class="main-head">
+              <h1>Learn touch typing</h1>
+              <span id="learn-progress" class="muted"></span>
+            </div>
+            <p class="muted">Rest your fingers on the home row (the keys with bumps: <kbd id="home-l">F</kbd> and <kbd id="home-r">J</kbd>). Each lesson adds new keys — reach the accuracy goal to complete it.</p>
+            <div id="lesson-grid" class="lesson-grid"></div>
+          </div>
+          <div id="learn-run" hidden>
+            <div class="main-head" style="justify-content:flex-start">
+              <button id="btn-learn-back" class="btn btn-ghost btn-sm">← Lessons</button>
+              <h1 id="learn-title"></h1>
+            </div>
+            <div id="learn-typing"></div>
+            <div id="learn-keyboard" class="kb-wrap"></div>
+          </div>
+          <div id="learn-result" hidden></div>
+        </main>
+        <aside class="panel" id="learn-panel"></aside>
+      </div>
+    </section>
+
+    <!-- ---------- STATISTICS ---------- -->
+    <section class="page" data-page="stats">
+      <div class="card stats-card">
+        <div class="main-head">
+          <h1>Statistics</h1>
+          <div class="filters">
+            <div class="seg seg-sm" id="stats-range">
+              <button data-v="7">7 days</button><button data-v="30">30 days</button><button data-v="0">All</button>
+            </div>
+            <div class="seg seg-sm" id="stats-kind">
+              <button data-v="all">All</button><button data-v="training">Training</button><button data-v="lesson">Lessons</button>
+            </div>
+          </div>
+        </div>
+        <div id="stats-body"></div>
+      </div>
+    </section>
+
+    <!-- ---------- SETTINGS ---------- -->
+    <section class="page" data-page="settings">
+      <div class="card settings-card" id="settings-body"></div>
+    </section>
+  </div>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <script>
+/* ---- js/db.js ---- */
+/* =========================================================
+   Store — persistence layer
+   - "folder" mode: File System Access API, JSON file in a user-chosen folder
+   - "local"  mode: localStorage fallback
+   The chosen folder handle is remembered in IndexedDB so the next
+   start only needs one click ("Continue with <folder>").
+   ========================================================= */
+const DB_FILE = 'typeflow-db.json';
+const LOCAL_KEY = 'typeflow-db';
+
+const DEFAULT_SETTINGS = {
+  name: '',
+  theme: 'dark',            // dark | light | system
+  layout: 'qwertz',         // qwertz | qwerty
+  fontSize: 26,
+  caret: 'line',            // line | block | underline
+  smoothCaret: true,
+  showKeyboardTraining: false,
+  strict: false,            // must correct a wrong key before continuing
+  sound: false,
+  lessonAccuracy: 95,
+  lessonLength: 30,         // words per lesson
+  // last used session options
+  mode: 'full',
+  words: 25,
+  time: 30,
+  normalize: true,
+  removeRefs: true,
+  removePunct: false,
+  lowercase: false,
+};
+
+function createDefaultDb() {
+  return {
+    version: 1,
+    createdAt: new Date().toISOString(),
+    settings: { ...DEFAULT_SETTINGS },
+    texts: [],      // { id, title, content, createdAt }
+    sessions: [],   // see Training/Learn finish handlers
+    lessons: {},    // lessonId -> { attempts, bestWpm, bestAcc, completed }
+    keyStats: {},   // char -> { hits, misses }
+  };
+}
+
+/** Fill missing keys so older DB files keep working after updates. */
+function migrateDb(data) {
+  const base = createDefaultDb();
+  const db = { ...base, ...data };
+  db.settings = { ...DEFAULT_SETTINGS, ...(data.settings || {}) };
+  for (const k of ['texts', 'sessions']) if (!Array.isArray(db[k])) db[k] = [];
+  for (const k of ['lessons', 'keyStats']) if (typeof db[k] !== 'object' || !db[k]) db[k] = {};
+  return db;
+}
+
+/* ---------- tiny IndexedDB key/value helper (stores the folder handle) ---------- */
+const Idb = {
+  _open() {
+    return new Promise((resolve, reject) => {
+      const req = indexedDB.open('typeflow', 1);
+      req.onupgradeneeded = () => req.result.createObjectStore('kv');
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  },
+  async get(key) {
+    try {
+      const db = await this._open();
+      return await new Promise((res, rej) => {
+        const r = db.transaction('kv').objectStore('kv').get(key);
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      });
+    } catch { return undefined; }
+  },
+  async set(key, value) {
+    try {
+      const db = await this._open();
+      await new Promise((res, rej) => {
+        const tx = db.transaction('kv', 'readwrite');
+        tx.objectStore('kv').put(value, key);
+        tx.oncomplete = res; tx.onerror = () => rej(tx.error);
+      });
+    } catch { /* ignore — remembering the folder is a convenience */ }
+  },
+};
+
+const Store = {
+  data: null,
+  mode: null,          // 'folder' | 'local'
+  dirHandle: null,
+  fileHandle: null,
+  _timer: null,
+  _writing: Promise.resolve(),
+  onSaveError: null,
+
+  get supportsFolder() { return typeof window.showDirectoryPicker === 'function'; },
+  get locationLabel() { return this.mode === 'folder' ? `📁 ${this.dirHandle.name}` : '💾 Browser storage'; },
+
+  /** Opens the folder picker and loads/creates the DB file. */
+  async pickFolder() {
+    const dir = await window.showDirectoryPicker({ id: 'typeflow', mode: 'readwrite' });
+    await this._useFolder(dir);
+    await Idb.set('dirHandle', dir);
+  },
+
+  /** Returns the remembered folder handle (or null). */
+  async rememberedFolder() {
+    if (!this.supportsFolder) return null;
+    return (await Idb.get('dirHandle')) || null;
+  },
+
+  /** Re-opens a remembered folder. Must be called from a user gesture (permission prompt). */
+  async resumeFolder(dir) {
+    const opts = { mode: 'readwrite' };
+    let perm = await dir.queryPermission(opts);
+    if (perm !== 'granted') perm = await dir.requestPermission(opts);
+    if (perm !== 'granted') throw new Error('Permission to the folder was denied.');
+    await this._useFolder(dir);
+  },
+
+  async _useFolder(dir) {
+    const fh = await dir.getFileHandle(DB_FILE, { create: true });
+    const file = await fh.getFile();
+    const text = await file.text();
+    let data = createDefaultDb();
+    if (text.trim()) {
+      try { data = JSON.parse(text); }
+      catch { throw new Error(`${DB_FILE} exists but is not valid JSON.`); }
+    }
+    this.dirHandle = dir;
+    this.fileHandle = fh;
+    this.mode = 'folder';
+    this.data = migrateDb(data);
+    await this.saveNow();   // writes the file immediately for brand-new folders
+  },
+
+  useLocal() {
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null'); } catch { /* ignore */ }
+    this.mode = 'local';
+    this.dirHandle = null;
+    this.fileHandle = null;
+    this.data = migrateDb(data || createDefaultDb());
+  },
+
+  /** Debounced save — call after every change. */
+  save() {
+    clearTimeout(this._timer);
+    this._timer = setTimeout(() => this.saveNow(), 400);
+  },
+
+  saveNow() {
+    clearTimeout(this._timer);
+    const json = JSON.stringify(this.data, null, 1);
+    // chain writes so two saves never interleave on the same file
+    this._writing = this._writing.then(async () => {
+      try {
+        if (this.mode === 'folder') {
+          const w = await this.fileHandle.createWritable();
+          await w.write(json);
+          await w.close();
+        } else {
+          localStorage.setItem(LOCAL_KEY, json);
+        }
+      } catch (err) {
+        console.error('Save failed', err);
+        this.onSaveError?.(err);
+      }
+    });
+    return this._writing;
+  },
+
+  replaceData(data) {
+    this.data = migrateDb(data);
+    return this.saveNow();
+  },
+};
+
+/** Small id helper used across modules. */
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+</script>
+  <script>
+/* ---- js/words.js ---- */
+/* =========================================================
+   Word lists + text preparation helpers
+   ========================================================= */
+const WORDS = {
+  de: `der die das und ist nicht ein eine sie ich er wir ihr es mit auf für von den dem des sich auch als
+noch nach bei aus wie wenn nur oder aber vor zur zum hat sind war haben wird werden kann man schon sehr
+alle über unter jetzt immer hier dort heute gut neu groß klein lang kurz alt jung viel wenig mehr ganz
+gern ja nein doch also dann denn weil dass ob ohne gegen durch bis seit zwischen während wieder
+haus hand tag jahr zeit welt mann frau kind leben weg land stadt arbeit frage seite teil fall ende
+wasser feuer luft erde licht nacht morgen abend woche monat stunde minute bild buch wort satz text
+schule lehrer klasse freund familie vater mutter bruder schwester name nummer platz raum tisch stuhl
+tür fenster straße auto bahn zug rad fuß kopf auge ohr mund herz seele geld markt preis kunde firma
+gehen kommen sehen geben nehmen machen sagen finden denken wissen lassen stehen liegen sitzen laufen
+schreiben lesen lernen spielen sprechen hören fragen zeigen bringen halten führen tragen ziehen fallen
+öffnen ändern zählen wählen hören fühlen müssen dürfen möchten können sollen wollen größe übung
+schön schnell langsam richtig falsch leicht schwer warm kalt hell dunkel laut leise früh spät
+ruhig sicher wichtig möglich einfach klar frei voll leer offen nah weit hoch tief rund
+tastatur finger taste zeile übung fehler tempo ziel erfolg fluss schreibmaschine
+fast sogar etwa bereits genau eben selbst beide jeder diese jene welche manche keine
+die sonne scheint der regen fällt das meer ist blau der wald ist grün
+apfel brot milch käse kaffee zucker salz suppe essen trinken küche garten blume baum vogel hund katze
+glück ruhe kraft mut idee plan weg ziel grund folge ordnung gruppe system daten frage antwort
+fähig ähnlich später natürlich zurück außen innen mädchen bär schüler grüße straße fuß maß`,
+  en: `the be to of and a in that have it for not on with he as you do at this but his by from they we
+say her she or an will my one all would there their what so up out if about who get which go me when
+make can like time no just him know take people into year your good some could them see other than
+then now look only come its over think also back after use two how our work first well way even new
+want because any these give day most us is was are been has had were said did made find long down
+here thing many very still own home hand high keep place where right small large next early young
+important few public same able world life school state family group country problem point fact
+water fire light night morning evening week month hour minute book word line text page story
+house room door window street car road train city friend mother father child name number
+write read learn play speak hear ask show bring hold lead carry pull fall open change count choose
+feel must should might need try call move live believe happen turn start stop run walk sit stand
+fast slow easy hard warm cold bright dark loud quiet early late safe clear free full empty near far
+keyboard finger key row practice mistake speed goal success flow typing letter
+apple bread milk cheese coffee sugar salt soup food drink kitchen garden flower tree bird dog cat
+quick brown fox jumps lazy over just zone quiz jazz exact box mix fix wax vex`,
+};
+for (const k in WORDS) WORDS[k] = [...new Set(WORDS[k].split(/\s+/).filter(Boolean))];
+
+const SAMPLE_TEXT = `Touch typing is a style of typing in which the typist uses all ten fingers without looking at the keys. Each finger has its own area on the keyboard, and the hands always return to the home row. With regular practice, speed and accuracy grow together, and typing begins to feel like a smooth flow instead of a search for letters.`;
+
+const TextPrep = {
+  /** Cleans pasted text according to the session options. */
+  clean(raw, { normalize, removeRefs, removePunct, lowercase }) {
+    let t = raw;
+    if (removeRefs) {
+      t = t.replace(/\[(\d+|[a-z]|citation needed|Anm\.? ?\d*|Bearbeiten|edit)\]/gi, '');
+    }
+    if (normalize) {
+      t = t
+        .replace(/[‘’‚′´`]/g, "'")
+        .replace(/[“”„«»″]/g, '"')
+        .replace(/[–—−]/g, '-')
+        .replace(/…/g, '...')
+        .replace(/[   ]/g, ' ')
+        .replace(/­/g, '');      // soft hyphen
+    }
+    if (removePunct) t = t.replace(/[^\p{L}\p{N}\s'-]/gu, ' ');
+    if (lowercase) t = t.toLowerCase();
+    // line breaks and runs of whitespace become single spaces
+    return t.replace(/\s+/g, ' ').trim();
+  },
+
+  words(text) { return text.split(' ').filter(Boolean); },
+
+  /** n random words drawn from the list (with repetition, avoiding immediate repeats). */
+  randomWords(list, n) {
+    const out = [];
+    for (let i = 0; i < n && list.length; i++) {
+      let w;
+      do { w = list[Math.floor(Math.random() * list.length)]; } while (list.length > 1 && w === out[out.length - 1]);
+      out.push(w);
+    }
+    return out;
+  },
+};
+
+</script>
+  <script>
+/* ---- js/keyboard.js ---- */
+/* =========================================================
+   Keyboard layouts + on-screen keyboard component
+   Finger codes: 0 L-pinky, 1 L-ring, 2 L-middle, 3 L-index,
+                 4 R-index, 5 R-middle, 6 R-ring, 7 R-pinky, 8 thumb
+   ========================================================= */
+const FINGER_NAMES = ['left pinky', 'left ring', 'left middle', 'left index',
+  'right index', 'right middle', 'right ring', 'right pinky', 'thumb'];
+
+const LAYOUTS = {
+  qwertz: {
+    name: 'German (QWERTZ)', lang: 'de', home: ['f', 'j'],
+    rows:    ['^1234567890ß´', 'qwertzuiopü+', 'asdfghjklöä#', '<yxcvbnm,.-'],
+    shift:   ['°!"§$%&/()=?`', 'QWERTZUIOPÜ*', "ASDFGHJKLÖÄ'", '>YXCVBNM;:_'],
+    fingers: ['0012334456777', '012334456777', '012334456777', '00123344567'],
+  },
+  qwerty: {
+    name: 'English (QWERTY)', lang: 'en', home: ['f', 'j'],
+    rows:    ['`1234567890-=', 'qwertyuiop[]', "asdfghjkl;'", 'zxcvbnm,./'],
+    shift:   ['~!@#$%^&*()_+', 'QWERTYUIOP{}', 'ASDFGHJKL:"', 'ZXCVBNM<>?'],
+    fingers: ['0012334456777', '012334456777', '01233445677', '0123344567'],
+  },
+};
+// left-side widths of the modifier keys per row (visual offset like a real board)
+const ROW_LEAD = [null, { label: 'Tab', w: 1.5 }, { label: 'Caps', w: 1.8 }, { label: 'Shift', w: 1.3, id: 'shiftL' }];
+const ROW_TAIL = [{ label: '⌫', w: 1.6 }, { label: '↵', w: 1.3 }, { label: '', w: 1.0 }, { label: 'Shift', w: 2.3, id: 'shiftR' }];
+
+/** Finds the key for a character: { row, col, shift, finger } or null. */
+function findKey(layoutId, ch) {
+  const L = LAYOUTS[layoutId];
+  if (ch === ' ') return { row: 4, col: 0, shift: false, finger: 8 };
+  for (let r = 0; r < L.rows.length; r++) {
+    let c = L.rows[r].indexOf(ch);
+    if (c >= 0) return { row: r, col: c, shift: false, finger: +L.fingers[r][c] };
+    c = L.shift[r].indexOf(ch);
+    if (c >= 0) return { row: r, col: c, shift: true, finger: +L.fingers[r][c] };
+  }
+  return null;
+}
+
+/** Maps a character typed on layout A to the char at the same physical position on layout B. */
+function mapChar(ch, from, to) {
+  if (from === to) return ch;
+  const k = findKey(from, ch);
+  if (!k || k.row > 3) return ch;
+  const T = LAYOUTS[to];
+  // QWERTZ bottom row starts with '<' which QWERTY lacks → shift column
+  let col = k.col;
+  if (k.row === 3) col += (from === 'qwertz' ? -1 : 1);
+  const src = k.shift ? T.shift[k.row] : T.rows[k.row];
+  return src[col] ?? ch;
+}
+
+class Keyboard {
+  /**
+   * @param {HTMLElement} el container
+   * @param {object} opts { layout, fingers: bool (color by finger), heat: bool, legend: bool }
+   */
+  constructor(el, opts) {
+    this.el = el;
+    this.opts = opts;
+    this.keys = new Map();   // "r:c" -> element
+    this.render();
+  }
+
+  render() {
+    const { layout, fingers = true, heat = false, legend = true } = this.opts;
+    const L = LAYOUTS[layout];
+    const kb = document.createElement('div');
+    kb.className = 'kb' + (fingers ? ' fingers' : '') + (heat ? ' heat' : '');
+    this.keys.clear();
+
+    L.rows.forEach((row, r) => {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'kb-row';
+      if (ROW_LEAD[r]) rowEl.appendChild(this._mod(ROW_LEAD[r], r === 3 ? 0 : null));
+      [...row].forEach((ch, c) => {
+        const k = document.createElement('div');
+        k.className = 'key';
+        k.dataset.f = L.fingers[r][c];
+        k.dataset.ch = ch;
+        k.textContent = /[a-zäöü]/.test(ch) ? ch.toUpperCase() : ch;
+        if (r === 2 && L.home.includes(ch)) k.classList.add('home');
+        this.keys.set(`${r}:${c}`, k);
+        rowEl.appendChild(k);
+      });
+      rowEl.appendChild(this._mod(ROW_TAIL[r], r === 3 ? 7 : null));
+      kb.appendChild(rowEl);
+    });
+    const spaceRow = document.createElement('div');
+    spaceRow.className = 'kb-row';
+    const space = document.createElement('div');
+    space.className = 'key mod';
+    space.style.setProperty('--w', 6.5);
+    space.dataset.f = 8;
+    space.dataset.ch = ' ';
+    space.textContent = 'Space';
+    this.keys.set('4:0', space);
+    spaceRow.appendChild(space);
+    kb.appendChild(spaceRow);
+
+    this.el.innerHTML = '';
+    this.el.appendChild(kb);
+    this.kb = kb;
+
+    if (legend && fingers && !heat) {
+      const lg = document.createElement('div');
+      lg.className = 'kb-legend';
+      lg.innerHTML = [['--f0', 'Pinky'], ['--f1', 'Ring'], ['--f2', 'Middle'], ['--f3', 'Index'], ['--f4', 'Thumb']]
+        .map(([v, n]) => `<span><i style="background:var(${v})"></i>${n}</span>`).join('');
+      this.el.appendChild(lg);
+      this.fingerEl = document.createElement('div');
+      this.fingerEl.className = 'kb-finger';
+      this.el.appendChild(this.fingerEl);
+    }
+  }
+
+  _mod({ label, w, id }, finger) {
+    const k = document.createElement('div');
+    k.className = 'key mod';
+    k.style.setProperty('--w', w);
+    k.textContent = label;
+    if (finger !== null) k.dataset.f = finger;
+    if (id) this[id] = k;
+    return k;
+  }
+
+  /** Highlights the key(s) needed for the next character. */
+  highlight(ch) {
+    this.kb.querySelectorAll('.target').forEach(k => k.classList.remove('target'));
+    if (ch == null) { if (this.fingerEl) this.fingerEl.textContent = ''; return; }
+    const info = findKey(this.opts.layout, ch);
+    if (!info) { if (this.fingerEl) this.fingerEl.textContent = ''; return; }
+    this.keys.get(`${info.row}:${info.col}`)?.classList.add('target');
+    let shiftNote = '';
+    if (info.shift) {
+      // Shift with the opposite hand
+      const shiftKey = info.finger <= 3 ? this.shiftR : this.shiftL;
+      shiftKey?.classList.add('target');
+      shiftNote = ` + <b>Shift</b> (${info.finger <= 3 ? 'right' : 'left'} pinky)`;
+    }
+    if (this.fingerEl) {
+      const label = ch === ' ' ? 'Space' : ch;
+      this.fingerEl.innerHTML = `<kbd>${escapeHtml(label)}</kbd> → <b>${FINGER_NAMES[info.finger]}</b>${shiftNote}`;
+    }
+  }
+
+  /** Short red flash on the key that should have been pressed. */
+  flashMiss(ch) {
+    const info = findKey(this.opts.layout, ch);
+    if (!info) return;
+    const k = this.keys.get(`${info.row}:${info.col}`);
+    if (!k) return;
+    k.classList.add('miss');
+    setTimeout(() => k.classList.remove('miss'), 180);
+  }
+
+  /** Heatmap mode: colors keys by error rate. stats = { char: {hits, misses} } */
+  applyHeat(stats, tooltip) {
+    // aggregate lower/upper case on the same physical key
+    const agg = new Map();
+    for (const [ch, s] of Object.entries(stats)) {
+      const info = findKey(this.opts.layout, ch);
+      if (!info) continue;
+      const id = `${info.row}:${info.col}`;
+      const a = agg.get(id) || { hits: 0, misses: 0 };
+      a.hits += s.hits; a.misses += s.misses;
+      agg.set(id, a);
+    }
+    let maxRate = 0;
+    for (const a of agg.values()) {
+      const total = a.hits + a.misses;
+      if (total >= 5) maxRate = Math.max(maxRate, a.misses / total);
+    }
+    for (const [id, el] of this.keys) {
+      const a = agg.get(id);
+      const total = a ? a.hits + a.misses : 0;
+      const rate = total ? a.misses / total : 0;
+      // scale relative to the worst key so differences stay visible
+      const pct = maxRate && total >= 5 ? Math.round((rate / maxRate) * 85) : 0;
+      el.style.background = pct ? `color-mix(in srgb, var(--accent) ${pct}%, var(--surface-2))` : '';
+      el.style.color = pct > 50 ? '#fff' : '';
+      el.onmouseenter = e => tooltip.show(e,
+        total ? `<b>${escapeHtml(el.dataset.ch === ' ' ? 'Space' : el.textContent)}</b> · ${(rate * 100).toFixed(1)}% errors<br>${a.misses} misses / ${total} presses`
+              : `<b>${escapeHtml(el.textContent)}</b> · no data yet`);
+      el.onmousemove = e => tooltip.move(e);
+      el.onmouseleave = () => tooltip.hide();
+    }
+  }
+}
+
+/** Uppercase label for a key cap — keeps 'ß' (whose uppercase would be 'SS'). */
+function keyLabel(ch) { return ch === 'ß' ? ch : ch.toUpperCase(); }
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+</script>
+  <script>
+/* ---- js/engine.js ---- */
+/* =========================================================
+   TypingSession — pure logic (no DOM)
+   TypingView   — renders a session, caret, scrolling, live meta
+   Input is routed by App via the hidden #key-sink textarea.
+   ========================================================= */
+class TypingSession {
+  /**
+   * @param {object} o
+   *  text        target string
+   *  timeLimit   seconds (time mode) or 0
+   *  strict      wrong keys are not accepted
+   *  moreText    () => string, appended in time mode when the text runs low
+   */
+  constructor({ text, timeLimit = 0, strict = false, moreText = null }) {
+    this.target = text;
+    this.typed = [];           // typed[i] = char the user entered at position i
+    this.timeLimit = timeLimit;
+    this.strict = strict;
+    this.moreText = moreText;
+    this.keystrokes = 0;       // every char key press
+    this.errors = 0;           // wrong key presses
+    this.startTime = 0;
+    this.endTime = 0;
+    this.finished = false;
+    this.samples = [];         // per-second { t, wpm, raw, err }
+    this.keyStats = {};        // expected char -> { hits, misses } (first attempt per position)
+    this._judged = new Set();  // positions already counted for keyStats
+    this._lastSampleSec = 0;
+    this._errInSec = 0;
+    this.listeners = {};
+  }
+
+  on(evt, fn) { (this.listeners[evt] ||= []).push(fn); return this; }
+  emit(evt, ...a) { (this.listeners[evt] || []).forEach(fn => fn(...a)); }
+
+  get pos() { return this.typed.length; }
+  get started() { return this.startTime > 0; }
+  get elapsed() {
+    if (!this.started) return 0;
+    return ((this.finished ? this.endTime : performance.now()) - this.startTime) / 1000;
+  }
+  get remaining() { return this.timeLimit ? Math.max(0, this.timeLimit - this.elapsed) : 0; }
+
+  /** Handles one typed character. Returns { ok, index }. */
+  input(ch) {
+    if (this.finished) return null;
+    if (!this.started) { this.startTime = performance.now(); this.emit('start'); }
+    const i = this.pos;
+    const expected = this.target[i];
+    const ok = ch === expected;
+    this.keystrokes++;
+    if (!ok) { this.errors++; this._errInSec++; }
+
+    if (!this._judged.has(i) && expected !== undefined) {
+      this._judged.add(i);
+      const s = (this.keyStats[expected] ||= { hits: 0, misses: 0 });
+      ok ? s.hits++ : s.misses++;
+    }
+
+    if (!ok && this.strict) { this.emit('reject', expected); return { ok, index: i, rejected: true }; }
+
+    this.typed.push(ch);
+    // time mode: keep the text endless
+    if (this.timeLimit && this.moreText && this.target.length - this.pos < 120) {
+      const extra = ' ' + this.moreText();
+      this.target += extra;
+      this.emit('extend', extra);
+    }
+    this.emit('change', i, i + 1);
+    if (!this.timeLimit && this.pos >= this.target.length) this.finish();
+    return { ok, index: i };
+  }
+
+  /** Backspace; with word=true deletes back to the previous word boundary. */
+  backspace(word = false) {
+    if (this.finished || this.pos === 0) return;
+    const from = this.pos;
+    if (word) {
+      // skip trailing spaces, then delete the word
+      while (this.pos > 0 && this.target[this.pos - 1] === ' ' && this.typed[this.pos - 1] === ' ') this.typed.pop();
+      while (this.pos > 0 && this.target[this.pos - 1] !== ' ') this.typed.pop();
+    } else {
+      this.typed.pop();
+    }
+    this.emit('change', this.pos, from);
+  }
+
+  /** Called ~every 250ms by the view; records per-second samples and ends time mode. */
+  tick() {
+    if (!this.started || this.finished) return;
+    const sec = Math.floor(this.elapsed);
+    if (sec > this._lastSampleSec) {
+      for (let s = this._lastSampleSec + 1; s <= sec; s++) {
+        const st = this.stats(s);
+        this.samples.push({ t: s, wpm: st.wpm, raw: st.raw, err: this._errInSec });
+        this._errInSec = 0;
+      }
+      this._lastSampleSec = sec;
+    }
+    if (this.timeLimit && this.elapsed >= this.timeLimit) this.finish();
+  }
+
+  finish() {
+    if (this.finished) return;
+    this.endTime = performance.now();
+    if (this.timeLimit) this.endTime = Math.min(this.endTime, this.startTime + this.timeLimit * 1000);
+    this.finished = true;
+    const secs = this.elapsed;
+    if (secs - this._lastSampleSec > 0.3) {
+      const st = this.stats(secs);
+      this.samples.push({ t: Math.round(secs * 10) / 10, wpm: st.wpm, raw: st.raw, err: this._errInSec });
+    }
+    this.emit('finish', this.stats());
+  }
+
+  /** Current statistics. */
+  stats(atSeconds) {
+    const secs = Math.max(atSeconds ?? this.elapsed, 0.001);
+    // never divide by less than one second — avoids absurd WPM after the first key
+    const minutes = Math.max(secs, 1) / 60;
+    let correct = 0;
+    for (let i = 0; i < this.typed.length; i++) if (this.typed[i] === this.target[i]) correct++;
+    const wpm = correct / 5 / minutes;
+    const raw = this.typed.length / 5 / minutes;
+    const accuracy = this.keystrokes ? ((this.keystrokes - this.errors) / this.keystrokes) * 100 : 100;
+    const total = this.timeLimit ? this.pos : this.target.length;
+    return {
+      wpm: this.started ? Math.round(wpm) : 0,
+      raw: this.started ? Math.round(raw) : 0,
+      accuracy: Math.round(accuracy * 10) / 10,
+      errors: this.errors,
+      correctChars: correct,
+      incorrectChars: this.typed.length - correct,
+      typedChars: this.typed.length,
+      keystrokes: this.keystrokes,
+      seconds: Math.round(secs * 10) / 10,
+      progress: this.timeLimit ? Math.min(1, secs / this.timeLimit) : Math.min(1, this.pos / Math.max(1, total)),
+    };
+  }
+
+  /** Top missed characters for the result screen. */
+  missedKeys(n = 8) {
+    return Object.entries(this.keyStats)
+      .filter(([, s]) => s.misses > 0)
+      .sort((a, b) => b[1].misses - a[1].misses)
+      .slice(0, n);
+  }
+}
+
+class TypingView {
+  /**
+   * @param {HTMLElement} el container
+   * @param {TypingSession} session
+   * @param {object} o { single: bool, keyboard: Keyboard|null, sound: bool, meta: bool }
+   */
+  constructor(el, session, o = {}) {
+    this.el = el;
+    this.s = session;
+    this.o = o;
+    this.charEls = [];
+    this.wordOf = [];     // char index -> word index (-1 for spaces)
+    this.wordEls = [];
+    this._build();
+    session.on('change', (a, b) => this._update(a, b));
+    session.on('extend', extra => this._appendText(extra, this.s.target.length - extra.length));
+    session.on('reject', exp => this._reject(exp));
+    session.on('start', () => this.caret.classList.add('typing-now'));
+    this._update(0, 0);
+    this._timer = setInterval(() => { session.tick(); this.updateMeta(); }, 250);
+    session.on('finish', () => this.destroy());
+    this._onResize = () => this._placeCaret();
+    window.addEventListener('resize', this._onResize);
+    // web fonts change glyph widths → re-measure when they arrive
+    document.fonts?.ready.then(() => this._onResize());
+    document.fonts?.addEventListener('loadingdone', this._onResize);
+  }
+
+  _build() {
+    const S = Store.data.settings;
+    this.el.innerHTML = `
+      <div class="typing${this.o.single ? ' single' : ''}${S.smoothCaret ? '' : ' no-smooth'}">
+        <div class="typing-meta"><span class="big" data-meta="main">0</span><span data-meta="side"></span></div>
+        <div class="typing-viewport"><div class="typing-inner"><span class="caret ${S.caret}"></span></div></div>
+        ${this.o.single ? '<div class="next-word"></div>' : ''}
+        <div class="focus-hint" hidden>Click here or press any key to focus</div>
+      </div>`;
+    this.root = this.el.firstElementChild;
+    this.inner = this.root.querySelector('.typing-inner');
+    this.viewport = this.root.querySelector('.typing-viewport');
+    this.caret = this.root.querySelector('.caret');
+    this.nextWordEl = this.root.querySelector('.next-word');
+    this.focusHint = this.root.querySelector('.focus-hint');
+    this.metaMain = this.root.querySelector('[data-meta="main"]');
+    this.metaSide = this.root.querySelector('[data-meta="side"]');
+    this.inner.style.fontSize = (this.o.single ? S.fontSize * 2 : S.fontSize) + 'px';
+    this._appendText(this.s.target, 0);
+    // viewport shows 3 lines (1 line in single mode)
+    const lh = parseFloat(getComputedStyle(this.inner).lineHeight);
+    this.lineHeight = lh;
+    this.viewport.style.height = (this.o.single ? lh : lh * 3) + 'px';
+    this.root.addEventListener('mousedown', e => { e.preventDefault(); App.focusSink(); });
+  }
+
+  /** Builds spans for text starting at char index `offset`. */
+  _appendText(text, offset) {
+    const frag = document.createDocumentFragment();
+    let wordEl = null;
+    for (let j = 0; j < text.length; j++) {
+      const ch = text[j];
+      const i = offset + j;
+      const span = document.createElement('span');
+      span.className = 'ch';
+      if (ch === ' ') {
+        span.classList.add('sp');
+        span.textContent = ' ';
+        frag.appendChild(span);
+        wordEl = null;
+        this.wordOf[i] = -1;
+      } else {
+        if (!wordEl) {
+          wordEl = document.createElement('span');
+          wordEl.className = 'word';
+          frag.appendChild(wordEl);
+          this.wordEls.push(wordEl);
+        }
+        span.textContent = ch;
+        wordEl.appendChild(span);
+        this.wordOf[i] = this.wordEls.length - 1;
+      }
+      this.charEls[i] = span;
+    }
+    this.inner.appendChild(frag);
+  }
+
+  _update(a, b) {
+    const { typed, target } = this.s;
+    for (let i = Math.min(a, b); i < Math.max(a, b); i++) {
+      const el = this.charEls[i];
+      if (!el) continue;
+      el.classList.remove('ok', 'bad');
+      if (i < typed.length) el.classList.add(typed[i] === target[i] ? 'ok' : 'bad');
+    }
+    if (this.o.single) this._updateSingle();
+    this._placeCaret();
+    this.o.keyboard?.highlight(target[this.s.pos] ?? null);
+    if (a < b && typed[a] !== undefined && typed[a] !== target[a]) this._onError(target[a]);
+    this.updateMeta();
+  }
+
+  _updateSingle() {
+    const p = this.s.pos;
+    // at a space the previous word stays visible until the space is typed
+    let w = this.wordOf[p];
+    if (w === -1 || w === undefined) w = this.wordOf[p - 1] ?? 0;
+    if (w === -1) w = this.wordOf[p + 1] ?? 0;
+    this.wordEls.forEach((el, k) => el.classList.toggle('current', k === w));
+    if (this.nextWordEl) this.nextWordEl.textContent = this.wordEls[w + 1]?.textContent ?? '';
+  }
+
+  _placeCaret() {
+    const p = this.s.pos;
+    this.lineHeight = parseFloat(getComputedStyle(this.inner).lineHeight) || this.lineHeight;
+    let el = this.charEls[p];
+    let x, y, h;
+    const visible = el && el.offsetParent !== null && !(this.o.single && el.classList.contains('sp'));
+    if (visible) {
+      x = el.offsetLeft; y = el.offsetTop; h = el.offsetHeight;
+    } else {
+      // after the last visible char
+      el = this.charEls[p - 1];
+      if (!el || el.offsetParent === null) { this.caret.style.opacity = 0; return; }
+      x = el.offsetLeft + el.offsetWidth; y = el.offsetTop; h = el.offsetHeight;
+    }
+    this.caret.style.opacity = '';
+    this.caret.style.left = x + 'px';
+    if (this.caret.classList.contains('underline')) {
+      this.caret.style.top = (y + h - 4) + 'px';
+    } else {
+      this.caret.style.top = (y + h * 0.12) + 'px';
+      this.caret.style.height = (h * 0.76) + 'px';
+    }
+    if (this.caret.classList.contains('block')) this.caret.style.width = (el.offsetWidth || h * .55) + 'px';
+    // keep the caret on the second visible line
+    if (!this.o.single) {
+      const line = Math.round(y / this.lineHeight);
+      const shift = Math.max(0, line - 1) * this.lineHeight;
+      this.inner.style.transform = `translateY(${-shift}px)`;
+    }
+    this.caret.classList.add('typing-now');
+    clearTimeout(this._blinkT);
+    this._blinkT = setTimeout(() => this.caret.classList.remove('typing-now'), 600);
+  }
+
+  _onError(expected) {
+    this.o.keyboard?.flashMiss(expected);
+    if (this.o.sound) beep();
+  }
+
+  _reject(expected) {
+    this._onError(expected);
+    const el = this.charEls[this.s.pos];
+    el?.classList.add('bad');
+    setTimeout(() => el?.classList.remove('bad'), 200);
+    this.root.classList.remove('shake'); void this.root.offsetWidth; this.root.classList.add('shake');
+  }
+
+  updateMeta() {
+    const st = this.s.stats();
+    if (this.s.timeLimit) {
+      this.metaMain.textContent = Math.ceil(this.s.started ? this.s.remaining : this.s.timeLimit) + 's';
+    } else if (this.o.single || this.o.wordCount) {
+      const done = this.wordOf.slice(0, this.s.pos).filter((w, i, arr) => w !== -1 && arr[i + 1] === -1).length;
+      this.metaMain.textContent = `${Math.min(done, this.wordEls.length)}/${this.wordEls.length}`;
+    } else {
+      this.metaMain.textContent = Math.round(st.progress * 100) + '%';
+    }
+    this.metaSide.textContent = this.s.started ? `${st.wpm} wpm · ${st.accuracy}%` : 'start typing…';
+    this.o.onMeta?.(st);
+  }
+
+  setFocused(f) { this.focusHint.hidden = f; }
+
+  destroy() {
+    clearInterval(this._timer);
+    window.removeEventListener('resize', this._onResize);
+    document.fonts?.removeEventListener('loadingdone', this._onResize);
+  }
+}
+
+/* ---------- error beep (WebAudio, no assets) ---------- */
+let _audioCtx;
+function beep() {
+  try {
+    _audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+    const o = _audioCtx.createOscillator();
+    const g = _audioCtx.createGain();
+    o.frequency.value = 220; o.type = 'square';
+    g.gain.setValueAtTime(0.05, _audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.0001, _audioCtx.currentTime + 0.08);
+    o.connect(g).connect(_audioCtx.destination);
+    o.start(); o.stop(_audioCtx.currentTime + 0.09);
+  } catch { /* audio not available */ }
+}
+
+/** Formats seconds as m:ss */
+function fmtTime(s) {
+  s = Math.round(s);
+  const m = Math.floor(s / 60);
+  return m ? `${m}:${String(s % 60).padStart(2, '0')}` : `${s}s`;
+}
+
+</script>
+  <script>
+/* ---- js/charts.js ---- */
+/* =========================================================
+   Tooltip + minimal SVG line chart with crosshair hover
+   ========================================================= */
+const Tooltip = {
+  el: null,
+  show(e, html) { this.el ||= document.getElementById('tooltip'); this.el.innerHTML = html; this.el.hidden = false; this.move(e); },
+  move(e) {
+    if (!this.el || this.el.hidden) return;
+    const r = this.el.getBoundingClientRect();
+    let x = e.clientX + 14, y = e.clientY - r.height - 10;
+    if (x + r.width > window.innerWidth - 8) x = e.clientX - r.width - 14;
+    if (y < 8) y = e.clientY + 16;
+    this.el.style.left = x + 'px'; this.el.style.top = y + 'px';
+  },
+  hide() { if (this.el) this.el.hidden = true; },
+};
+
+/**
+ * Renders a single-series line chart.
+ * @param {HTMLElement} el
+ * @param {Array<{x:number,y:number,label:string,marks?:number}>} points
+ * @param {object} o { height, yMin, yMax, ySuffix, tip(point)->html, xLabel(point)->string, area }
+ */
+function lineChart(el, points, o = {}) {
+  el.classList.add('chart');
+  if (!points.length) { el.innerHTML = '<div class="empty">No data yet</div>'; return; }
+  const W = Math.max(el.clientWidth, 280), H = o.height || 200;
+  const pad = { l: 36, r: 12, t: 12, b: 26 };
+  const ys = points.map(p => p.y);
+  let yMin = o.yMin ?? Math.min(...ys), yMax = o.yMax ?? Math.max(...ys);
+  if (o.yMin === undefined) yMin = Math.max(0, Math.floor((yMin - 5) / 10) * 10);
+  if (o.yMax === undefined) yMax = Math.ceil((yMax + 5) / 10) * 10;
+  if (yMax === yMin) yMax = yMin + 10;
+  const n = points.length;
+  const x = i => pad.l + (n === 1 ? (W - pad.l - pad.r) / 2 : (i / (n - 1)) * (W - pad.l - pad.r));
+  const y = v => pad.t + (1 - (v - yMin) / (yMax - yMin)) * (H - pad.t - pad.b);
+
+  // ~4 horizontal gridlines with round values
+  const step = niceStep((yMax - yMin) / 4);
+  let grid = '', axis = '';
+  for (let v = Math.ceil(yMin / step) * step; v <= yMax + 1e-9; v += step) {
+    grid += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}"/>`;
+    axis += `<text x="${pad.l - 8}" y="${y(v) + 4}" text-anchor="end">${+v.toFixed(1)}${o.ySuffix || ''}</text>`;
+  }
+  // x labels: first, middle, last
+  const xIdx = [...new Set([0, Math.floor((n - 1) / 2), n - 1])];
+  for (const i of xIdx) {
+    const anchor = i === 0 ? 'start' : i === n - 1 ? 'end' : 'middle';
+    axis += `<text x="${x(i)}" y="${H - 6}" text-anchor="${n === 1 ? 'middle' : anchor}">${escapeHtml(o.xLabel ? o.xLabel(points[i]) : points[i].label)}</text>`;
+  }
+  const d = points.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.y).toFixed(1)}`).join('');
+  const area = o.area !== false && n > 1
+    ? `<path class="area" d="${d}L${x(n - 1)},${y(yMin)}L${x(0)},${y(yMin)}Z"/>` : '';
+  const marks = points.filter(p => p.marks).map(p => {
+    const i = points.indexOf(p);
+    return `<circle class="err-mark" cx="${x(i)}" cy="${H - pad.b - 3}" r="${Math.min(2 + p.marks, 5)}"/>`;
+  }).join('');
+  const dots = n <= 40 ? points.map((p, i) => `<circle class="dot" cx="${x(i)}" cy="${y(p.y)}" r="3.5"/>`).join('') : '';
+
+  el.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" height="${H}" role="img" aria-label="${escapeHtml(o.aria || 'Line chart')}">
+      <g class="grid">${grid}</g>
+      <g class="axis">${axis}</g>
+      ${area}<path class="series" d="${d}"/>${dots}${marks}
+      <line class="cross" y1="${pad.t}" y2="${H - pad.b}" visibility="hidden"/>
+      <circle class="dot hover-dot" r="5" visibility="hidden"/>
+      <rect x="${pad.l}" y="0" width="${W - pad.l - pad.r}" height="${H}" fill="transparent"/>
+    </svg>`;
+
+  const svg = el.querySelector('svg');
+  const cross = svg.querySelector('.cross');
+  const hd = svg.querySelector('.hover-dot');
+  const hit = svg.querySelector('rect');
+  hit.addEventListener('mousemove', e => {
+    const r = svg.getBoundingClientRect();
+    const mx = (e.clientX - r.left) * (W / r.width);
+    const i = n === 1 ? 0 : Math.max(0, Math.min(n - 1, Math.round(((mx - pad.l) / (W - pad.l - pad.r)) * (n - 1))));
+    const p = points[i];
+    cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.setAttribute('visibility', 'visible');
+    hd.setAttribute('cx', x(i)); hd.setAttribute('cy', y(p.y)); hd.setAttribute('visibility', 'visible');
+    Tooltip.show(e, o.tip ? o.tip(p) : `<b>${p.y}</b>`);
+  });
+  hit.addEventListener('mouseleave', () => {
+    cross.setAttribute('visibility', 'hidden'); hd.setAttribute('visibility', 'hidden'); Tooltip.hide();
+  });
+}
+
+function niceStep(raw) {
+  const p = Math.pow(10, Math.floor(Math.log10(raw || 1)));
+  const f = raw / p;
+  return (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * p;
+}
+
+</script>
+  <script>
+/* ---- js/training.js ---- */
+/* =========================================================
+   Start tab — paste text, choose mode, type, see results
+   Also contains SessionUI (live panel + result view) shared with Learn.
+   ========================================================= */
+const MODE_DESC = {
+  full: 'Type the whole text from start to finish.',
+  random: 'Random words picked from your text.',
+  single: 'One word at a time — big and focused.',
+  time: 'Type as much as you can before the time runs out.',
+};
+const MODE_NAMES = { full: 'Full text', random: 'Random words', single: 'Single words', time: 'Time', lesson: 'Lesson' };
+
+const SessionUI = {
+  /** Live stats markup for the dark panel. */
+  liveHtml(title) {
+    return `
+      <h2>${escapeHtml(title)}</h2>
+      <div class="live-grid">
+        <div class="live-tile"><div class="v accent" data-live="wpm">0</div><div class="k">WPM</div></div>
+        <div class="live-tile"><div class="v" data-live="acc">100%</div><div class="k">Accuracy</div></div>
+        <div class="live-tile"><div class="v" data-live="time">0s</div><div class="k" data-live="timeLabel">Time</div></div>
+        <div class="live-tile"><div class="v" data-live="err">0</div><div class="k">Errors</div></div>
+        <div class="live-tile wide"><div class="k">Progress</div><div class="progress"><div data-live="prog"></div></div></div>
+      </div>
+      <div class="btn-row" style="margin-top:18px">
+        <button class="btn btn-ghost" data-act="restart" style="flex:1">Restart <kbd>Tab</kbd></button>
+        <button class="btn btn-ghost" data-act="stop" style="flex:1">Stop <kbd>Esc</kbd></button>
+      </div>`;
+  },
+
+  updateLive(panel, st, session) {
+    const q = k => panel.querySelector(`[data-live="${k}"]`);
+    if (!q('wpm')) return;
+    q('wpm').textContent = st.wpm;
+    q('acc').textContent = st.accuracy + '%';
+    q('err').textContent = st.errors;
+    if (session.timeLimit) {
+      q('time').textContent = Math.ceil(session.started ? session.remaining : session.timeLimit) + 's';
+      q('timeLabel').textContent = 'Remaining';
+    } else {
+      q('time').textContent = fmtTime(st.seconds);
+    }
+    q('prog').style.width = (st.progress * 100).toFixed(1) + '%';
+  },
+
+  /** Result screen in the main area. */
+  renderResult(el, { stats, session, heading, badge = '', buttons = '' }) {
+    const missed = session.missedKeys();
+    el.innerHTML = `
+      <div class="main-head"><h1>${escapeHtml(heading)}</h1>${badge}</div>
+      <div class="result-hero">
+        <div class="hero-num"><div class="v">${stats.wpm}</div><div class="k">WPM</div></div>
+        <div class="hero-num sm"><div class="v">${stats.accuracy}%</div><div class="k">Accuracy</div></div>
+        <div class="hero-num sm"><div class="v">${stats.raw}</div><div class="k">Raw WPM</div></div>
+      </div>
+      <div class="result-grid">
+        <div class="stat-tile"><div class="v">${fmtTime(stats.seconds)}</div><div class="k">Time</div></div>
+        <div class="stat-tile"><div class="v">${stats.correctChars}<span class="muted">/${stats.incorrectChars}</span></div><div class="k">Correct / wrong chars</div></div>
+        <div class="stat-tile"><div class="v">${stats.errors}</div><div class="k">Wrong key presses</div></div>
+        <div class="stat-tile"><div class="v">${stats.keystrokes}</div><div class="k">Keystrokes</div></div>
+      </div>
+      <div class="chart-box" style="margin-bottom:20px">
+        <h3>Speed over time <small>WPM per second · red dots = errors</small></h3>
+        <div data-chart></div>
+      </div>
+      <h3>Most missed keys</h3>
+      <div class="missed" style="margin-bottom:24px">${missed.length
+        ? missed.map(([ch, s]) => `<span><kbd>${ch === ' ' ? '␣' : escapeHtml(ch)}</kbd><small>${s.misses}×</small></span>`).join('')
+        : '<span class="muted">None — flawless! 🎉</span>'}</div>
+      <div class="btn-row">${buttons}</div>`;
+    const pts = session.samples.map(s => ({ x: s.t, y: s.wpm, label: s.t + 's', marks: s.err }));
+    lineChart(el.querySelector('[data-chart]'), pts, {
+      height: 180, yMin: 0, aria: 'Words per minute over time',
+      tip: p => `<b>${p.y} wpm</b> at ${p.label}${p.marks ? `<br>${p.marks} error${p.marks > 1 ? 's' : ''}` : ''}`,
+    });
+  },
+};
+
+const Training = {
+  state: 'idle',       // idle | running | result
+  session: null,
+  view: null,
+  keyboard: null,
+  lastConfig: null,
+
+  el: id => document.getElementById(id),
+
+  init() {
+    const S = Store.data.settings;
+    this.src = this.el('source-text');
+    this.src.oninput = () => this.updateTextInfo();
+
+    this._seg('mode-seg', 'mode', S.mode, v => { S.mode = v; this.syncModeUi(); });
+    this._seg('words-seg', 'v', String(S.words), v => { S.words = +v; });
+    this._seg('time-seg', 'v', String(S.time), v => { S.time = +v; });
+    const checks = { 'opt-normalize': 'normalize', 'opt-refs': 'removeRefs', 'opt-punct': 'removePunct', 'opt-lower': 'lowercase' };
+    for (const [id, key] of Object.entries(checks)) {
+      const cb = this.el(id);
+      cb.checked = S[key];
+      cb.onchange = () => { S[key] = cb.checked; Store.save(); this.updateTextInfo(); };
+    }
+    this.el('btn-start').onclick = () => this.start();
+    this.el('train-panel-live').onclick = e => {
+      const act = e.target.closest('[data-act]')?.dataset.act;
+      if (act === 'restart') this.restart();
+      if (act === 'stop') this.stop();
+    };
+    this.syncModeUi();
+    this.renderSaved();
+    this.updateTextInfo();
+  },
+
+  /** Wires a segmented control; persists the choice in settings. */
+  _seg(id, attr, current, onPick) {
+    const seg = this.el(id);
+    const set = v => seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset[attr] === v));
+    set(current);
+    seg.onclick = e => {
+      const b = e.target.closest('button'); if (!b) return;
+      set(b.dataset[attr]); onPick(b.dataset[attr]); Store.save();
+    };
+  },
+
+  syncModeUi() {
+    const m = Store.data.settings.mode;
+    this.el('mode-desc').textContent = MODE_DESC[m];
+    this.el('opt-words').hidden = !(m === 'random' || m === 'single');
+    this.el('opt-time').hidden = m !== 'time';
+  },
+
+  cleanOpts() {
+    const S = Store.data.settings;
+    return { normalize: S.normalize, removeRefs: S.removeRefs, removePunct: S.removePunct, lowercase: S.lowercase };
+  },
+
+  updateTextInfo() {
+    const raw = this.src.value.trim();
+    const btn = this.el('btn-start');
+    if (!raw) {
+      this.el('text-info').textContent = '';
+      btn.textContent = 'Start with sample text';
+      return;
+    }
+    const clean = TextPrep.clean(raw, this.cleanOpts());
+    const words = TextPrep.words(clean).length;
+    this.el('text-info').textContent = `${words} words · ${clean.length} characters`;
+    btn.textContent = 'Start';
+  },
+
+  /* ---------- saved texts ---------- */
+  renderSaved() {
+    const box = this.el('saved-texts');
+    const texts = Store.data.texts;
+    const chips = [`<button class="chip" data-sample><span>✨ Sample text</span></button>`];
+    for (const t of texts.slice().reverse()) {
+      chips.push(`<span class="chip" data-id="${t.id}" title="${escapeHtml(t.content.slice(0, 200))}">
+        <span>${escapeHtml(t.title)}</span><button class="x" data-del="${t.id}" aria-label="Delete">×</button></span>`);
+    }
+    box.innerHTML = chips.join('');
+    box.onclick = e => {
+      const del = e.target.closest('[data-del]');
+      if (del) {
+        Store.data.texts = Store.data.texts.filter(t => t.id !== del.dataset.del);
+        Store.save(); this.renderSaved(); return;
+      }
+      const chip = e.target.closest('.chip'); if (!chip) return;
+      this.src.value = chip.hasAttribute('data-sample') ? SAMPLE_TEXT : (Store.data.texts.find(t => t.id === chip.dataset.id)?.content || '');
+      this.updateTextInfo();
+    };
+  },
+
+  saveText(raw) {
+    if (raw === SAMPLE_TEXT || Store.data.texts.some(t => t.content === raw)) return;
+    const title = raw.replace(/\s+/g, ' ').split(' ').slice(0, 6).join(' ').slice(0, 48) + '…';
+    Store.data.texts.push({ id: uid(), title, content: raw, createdAt: new Date().toISOString() });
+    if (Store.data.texts.length > 30) Store.data.texts.shift();
+    this.renderSaved();
+  },
+
+  /* ---------- session lifecycle ---------- */
+  buildConfig() {
+    const S = Store.data.settings;
+    const raw = this.src.value.trim() || SAMPLE_TEXT;
+    if (!this.src.value.trim()) { this.src.value = SAMPLE_TEXT; this.updateTextInfo(); }
+    const clean = TextPrep.clean(raw, this.cleanOpts());
+    const words = TextPrep.words(clean);
+    const mode = S.mode;
+    const cfg = { mode, raw, title: raw.slice(0, 48), timeLimit: 0, moreText: null, single: false };
+    if (mode === 'full') cfg.text = clean;
+    if (mode === 'random') cfg.text = TextPrep.randomWords(words, S.words).join(' ');
+    if (mode === 'single') { cfg.text = TextPrep.randomWords(words, S.words).join(' '); cfg.single = true; }
+    if (mode === 'time') {
+      cfg.timeLimit = S.time;
+      cfg.text = TextPrep.randomWords(words, 60).join(' ');
+      cfg.moreText = () => TextPrep.randomWords(words, 30).join(' ');
+    }
+    cfg.wordCount = mode === 'random' || mode === 'single';
+    return cfg;
+  },
+
+  start(reuse = false) {
+    if (!reuse || !this.lastConfig) {
+      this.lastConfig = this.buildConfig();
+      this.saveText(this.lastConfig.raw);
+      Store.save();
+    }
+    const cfg = this.lastConfig;
+    const S = Store.data.settings;
+    this.cleanupSession();
+    this.session = new TypingSession({ text: cfg.text, timeLimit: cfg.timeLimit, strict: S.strict, moreText: cfg.moreText });
+
+    this.showState('running');
+    const kbEl = this.el('train-keyboard');
+    kbEl.hidden = !S.showKeyboardTraining || cfg.single;
+    this.keyboard = kbEl.hidden ? null : new Keyboard(kbEl, { layout: S.layout });
+
+    const live = this.el('train-panel-live');
+    live.innerHTML = SessionUI.liveHtml(MODE_NAMES[cfg.mode]);
+    this.view = new TypingView(this.el('train-typing'), this.session, {
+      single: cfg.single, wordCount: cfg.wordCount, keyboard: this.keyboard, sound: S.sound,
+      onMeta: st => SessionUI.updateLive(live, st, this.session),
+    });
+    this.session.on('finish', st => this.finish(st));
+    App.activate({ view: this.view, session: this.session, onTab: () => this.restart(), onEscape: () => this.stop() });
+  },
+
+  /** Restart: same mode, freshly generated words (full text stays the same). */
+  restart() {
+    if (this.lastConfig && this.lastConfig.mode !== 'full') this.lastConfig = this.buildConfig();
+    this.start(true);
+  },
+
+  stop() {
+    this.cleanupSession();
+    this.lastResult = false;
+    this.showState('idle');
+  },
+
+  finish(stats) {
+    App.deactivate();
+    const cfg = this.lastConfig;
+    // ignore accidental sessions (nothing typed)
+    if (stats.typedChars < 2) { this.showState('idle'); return; }
+    App.recordSession(this.session, { kind: 'training', mode: cfg.mode, textTitle: cfg.title, timeLimit: cfg.timeLimit });
+    this.lastResult = true;
+    this.showState('result');
+    const res = this.el('train-result');
+    SessionUI.renderResult(res, {
+      stats, session: this.session,
+      heading: `${MODE_NAMES[cfg.mode]} — result`,
+      buttons: `<button class="btn btn-primary" data-r="again">Again <kbd>Tab</kbd></button>
+                <button class="btn btn-ghost" data-r="new">New text</button>`,
+    });
+    res.onclick = e => {
+      const r = e.target.closest('[data-r]')?.dataset.r;
+      if (r === 'again') this.restart();
+      if (r === 'new') { this.lastResult = false; this.showState('idle'); this.src.focus(); }
+    };
+    App.resultKeys = { onTab: () => this.restart() };
+  },
+
+  cleanupSession() {
+    App.deactivate();
+    this.view?.destroy();
+    this.view = null;
+    this.session = null;
+  },
+
+  showState(state) {
+    this.state = state;
+    this.el('train-idle').hidden = state !== 'idle';
+    this.el('train-run').hidden = state !== 'running';
+    this.el('train-result').hidden = state !== 'result';
+    this.el('train-panel-settings').hidden = state === 'running';
+    this.el('train-panel-live').hidden = state !== 'running';
+    if (state !== 'result') App.resultKeys = null;
+  },
+
+  /** Called when settings change (layout, font…) */
+  refresh() {
+    this.syncModeUi();
+    this.renderSaved();
+  },
+};
+
+</script>
+  <script>
+/* ---- js/learn.js ---- */
+/* =========================================================
+   Learn tab — progressive touch-typing lessons
+   Lessons are defined with QWERTZ characters and mapped to the
+   active layout by physical key position (see mapChar).
+   ========================================================= */
+const LESSONS = [
+  { id: 'home-l', title: 'Home row · left hand', keys: 'asdf' },
+  { id: 'home-r', title: 'Home row · right hand', keys: 'jklö' },
+  { id: 'gh', title: 'Index stretch', keys: 'gh' },
+  { id: 'ei', title: 'Top row · middle fingers', keys: 'ei' },
+  { id: 'ru', title: 'Top row · index fingers', keys: 'ru' },
+  { id: 'tz', title: 'Top row · index stretch', keys: 'tz' },
+  { id: 'wo', title: 'Top row · ring fingers', keys: 'wo' },
+  { id: 'qp', title: 'Top row · pinkies', keys: 'qp' },
+  { id: 'nv', title: 'Bottom row · index fingers', keys: 'nv' },
+  { id: 'cm', title: 'Bottom row · middle & index', keys: 'cm' },
+  { id: 'bxy', title: 'Bottom row · the rest', keys: 'bxy' },
+  { id: 'umlaut', title: 'Umlauts & ß', keys: 'äüß', only: 'qwertz' },
+  { id: 'punct', title: 'Punctuation', keys: ',.-', punct: true, noMap: true },
+  { id: 'caps', title: 'Capital letters (Shift)', keys: '', caps: true },
+  { id: 'numbers', title: 'Number row', keys: '1234567890', numbers: true },
+  { id: 'words', title: 'Real words', keys: '', real: true },
+];
+
+const Learn = {
+  session: null, view: null, keyboard: null, current: null,
+  el: id => document.getElementById(id),
+
+  init() {
+    this.el('btn-learn-back').onclick = () => this.showList();
+        this.el('learn-panel').onclick = e => {
+      const act = e.target.closest('[data-act]')?.dataset.act;
+      if (act === 'restart') this.startLesson(this.current);
+      if (act === 'stop') this.showList();
+    };
+    this.showList();
+  },
+
+  get layout() { return Store.data.settings.layout; },
+  lessons() { return LESSONS.filter(l => !l.only || l.only === this.layout); },
+  mapKeys(keys, lesson) { return lesson?.noMap ? [...keys] : [...keys].map(c => mapChar(c, 'qwertz', this.layout)); },
+
+  /** All letters allowed up to (and including) lesson index i. */
+  allowedUpTo(i) {
+    const set = new Set();
+    this.lessons().slice(0, i + 1).forEach(l => this.mapKeys(l.keys, l).forEach(c => set.add(c)));
+    return set;
+  },
+
+  /* ---------- lesson list ---------- */
+  showList() {
+    this.cleanup();
+    this.el('learn-list').hidden = false;
+    this.el('learn-run').hidden = true;
+    this.el('learn-result').hidden = true;
+    const L = LAYOUTS[this.layout];
+    this.el('home-l').textContent = L.home[0].toUpperCase();
+    this.el('home-r').textContent = L.home[1].toUpperCase();
+    const prog = Store.data.lessons;
+    const list = this.lessons();
+    const done = list.filter(l => prog[l.id]?.completed).length;
+    this.el('learn-progress').textContent = `${done}/${list.length} completed`;
+
+    this.el('lesson-grid').innerHTML = list.map((l, i) => {
+      const p = prog[l.id];
+      const keys = l.caps ? ['⇧', 'A–Z'] : l.real ? ['Aa', '.,'] : this.mapKeys(l.keys, l).map(keyLabel);
+      return `<button class="lesson${p?.completed ? ' completed' : ''}" data-i="${i}">
+        <div class="n"><span>Lesson ${i + 1}</span>${p?.completed ? '<span class="done">✓ done</span>' : ''}</div>
+        <div class="t">${escapeHtml(l.title)}</div>
+        <div class="keys">${keys.map(k => `<kbd>${escapeHtml(k)}</kbd>`).join('')}</div>
+        <div class="best">${p ? `best ${p.bestWpm} wpm · ${p.bestAcc}%` : 'not started'}</div>
+      </button>`;
+    }).join('');
+    this.el('lesson-grid').onclick = e => {
+      const b = e.target.closest('.lesson'); if (b) this.startLesson(+b.dataset.i);
+    };
+
+    // next suggested lesson in the panel
+    const nextIdx = Math.max(0, list.findIndex(l => !prog[l.id]?.completed));
+    const totalSessions = Store.data.sessions.filter(s => s.kind === 'lesson').length;
+    this.el('learn-panel').innerHTML = `
+      <h2>Your path</h2>
+      <div class="panel-section">
+        <div class="live-grid">
+          <div class="live-tile"><div class="v accent">${done}</div><div class="k">Lessons done</div></div>
+          <div class="live-tile"><div class="v">${totalSessions}</div><div class="k">Attempts</div></div>
+        </div>
+        <div class="progress"><div style="width:${(done / list.length) * 100}%"></div></div>
+      </div>
+      <div class="panel-section">
+        <span class="label">Up next</span>
+        <p><b>Lesson ${nextIdx + 1}: ${escapeHtml(list[nextIdx].title)}</b></p>
+        <button class="btn btn-primary btn-block" id="btn-next-lesson">Start lesson ${nextIdx + 1}</button>
+      </div>
+      <div class="panel-section">
+        <span class="label">Tips</span>
+        <p>Don't look at your keyboard — use the one on screen.</p>
+        <p>Accuracy first, speed follows. Goal: ${Store.data.settings.lessonAccuracy}%.</p>
+        <p>Return to the home row after every key.</p>
+      </div>`;
+    this.el('btn-next-lesson').onclick = () => this.startLesson(nextIdx);
+  },
+
+  /* ---------- exercise generation ---------- */
+  generate(i) {
+    const lesson = this.lessons()[i];
+    const S = Store.data.settings;
+    const lang = LAYOUTS[this.layout].lang;
+    const count = S.lessonLength;
+    const allowed = this.allowedUpTo(i);
+    const letters = [...allowed].filter(c => /\p{L}/u.test(c) || c === ';');
+    const focus = this.mapKeys(lesson.keys, lesson).filter(c => /\p{L}/u.test(c) || c === ';');
+    const pick = a => a[Math.floor(Math.random() * a.length)];
+
+    const fits = w => [...w].every(c => allowed.has(c));
+    const wordsAll = WORDS[lang];
+    const words = wordsAll.filter(fits);
+    const focusWords = focus.length ? words.filter(w => focus.some(c => w.includes(c))) : [];
+
+    // nonsense "drill" words, weighted towards the new keys
+    const pseudo = () => {
+      const len = 2 + Math.floor(Math.random() * 4);
+      let w = '';
+      for (let k = 0; k < len; k++) w += (focus.length && Math.random() < 0.5) ? pick(focus) : pick(letters);
+      return w;
+    };
+
+    const out = [];
+    const used = new Map();
+    const pickFresh = pool => {
+      for (let tries = 0; tries < 8; tries++) {
+        const w = pick(pool);
+        if ((used.get(w) || 0) < 2) { used.set(w, (used.get(w) || 0) + 1); return w; }
+      }
+      return pseudo();
+    };
+    // first lessons start with simple repetition drills, e.g. "fff jjj fj"
+    if (focus.length && i < 11) focus.forEach(c => out.push(c.repeat(3)));
+    while (out.length < count) {
+      const r = Math.random();
+      if (lesson.real) out.push(pickFresh(wordsAll));
+      else if (focusWords.length && r < 0.45) out.push(pickFresh(focusWords));
+      else if (words.length > 8 && r < 0.75) out.push(pickFresh(words));
+      else out.push(pseudo());
+    }
+    let tokens = out.slice(0, count);
+
+    if (lesson.caps || lesson.real) {
+      tokens = tokens.map((w, k) => (k === 0 || Math.random() < (lesson.caps ? 0.5 : 0.15)) ? w[0].toUpperCase() + w.slice(1) : w);
+    }
+    if (lesson.numbers) {
+      tokens = tokens.map(w => Math.random() < 0.45 ? String(Math.floor(Math.random() * (Math.random() < .5 ? 100 : 10000))) : w);
+    }
+    const punct = [',', '.', '-'];
+    if (lesson.punct || lesson.real || this.lessons().indexOf(LESSONS.find(l => l.id === 'punct')) < i) {
+      tokens = tokens.map((w, k) => {
+        if (k === tokens.length - 1) return w + punct[1];
+        const r = Math.random();
+        return r < 0.12 ? w + punct[0] : r < 0.2 ? w + punct[1] : (r < 0.24 && lesson.punct) ? w + punct[2] + pick(words.length ? words : [w]) : w;
+      });
+    }
+    return tokens.join(' ');
+  },
+
+  /* ---------- running a lesson ---------- */
+  startLesson(i) {
+    this.cleanup();
+    this.current = i;
+    const lesson = this.lessons()[i];
+    const S = Store.data.settings;
+    this.el('learn-list').hidden = true;
+    this.el('learn-result').hidden = true;
+    this.el('learn-run').hidden = false;
+    this.el('learn-title').textContent = `Lesson ${i + 1}: ${lesson.title}`;
+
+    this.keyboard = new Keyboard(this.el('learn-keyboard'), { layout: this.layout });
+    this.session = new TypingSession({ text: this.generate(i), strict: S.strict });
+    const panel = this.el('learn-panel');
+    const newKeys = lesson.caps ? ['Shift'] : this.mapKeys(lesson.keys, lesson);
+    panel.innerHTML = `
+      <div class="panel-section">
+        <span class="label">New keys</span>
+        <div class="missed">${newKeys.length ? newKeys.map(k => `<kbd>${escapeHtml(keyLabel(k))}</kbd>`).join('') : '<span class="hint" style="margin:0">Review — all keys so far</span>'}</div>
+        <p class="hint">Goal: ≥ ${S.lessonAccuracy}% accuracy</p>
+      </div>
+      ${SessionUI.liveHtml('Live')}`;
+    this.view = new TypingView(this.el('learn-typing'), this.session, {
+      keyboard: this.keyboard, sound: S.sound, wordCount: true,
+      onMeta: st => SessionUI.updateLive(panel, st, this.session),
+    });
+    this.session.on('finish', st => this.finish(st));
+    App.activate({ view: this.view, session: this.session, onTab: () => this.startLesson(i), onEscape: () => this.showList() });
+  },
+
+  finish(stats) {
+    App.deactivate();
+    const lesson = this.lessons()[this.current];
+    const S = Store.data.settings;
+    const passed = stats.accuracy >= S.lessonAccuracy;
+    App.recordSession(this.session, { kind: 'lesson', mode: 'lesson', lessonId: lesson.id, textTitle: lesson.title });
+
+    const p = (Store.data.lessons[lesson.id] ||= { attempts: 0, bestWpm: 0, bestAcc: 0, completed: false });
+    p.attempts++;
+    p.bestWpm = Math.max(p.bestWpm, stats.wpm);
+    p.bestAcc = Math.max(p.bestAcc, stats.accuracy);
+    if (passed) p.completed = true;
+    Store.save();
+
+    this.el('learn-run').hidden = true;
+    const res = this.el('learn-result');
+    res.hidden = false;
+    const hasNext = this.current < this.lessons().length - 1;
+    SessionUI.renderResult(res, {
+      stats, session: this.session,
+      heading: `Lesson ${this.current + 1}: ${lesson.title}`,
+      badge: passed ? `<span class="badge pass">✓ Passed</span>` : `<span class="badge fail">✗ Below ${S.lessonAccuracy}% — try again</span>`,
+      buttons: (passed && hasNext ? `<button class="btn btn-primary" data-r="next">Next lesson →</button>` : '')
+        + `<button class="btn ${passed && hasNext ? 'btn-ghost' : 'btn-primary'}" data-r="again">Repeat</button>`
+        + `<button class="btn btn-ghost" data-r="list">All lessons</button>`,
+    });
+    res.onclick = e => {
+      const r = e.target.closest('[data-r]')?.dataset.r;
+      if (r === 'next') this.startLesson(this.current + 1);
+      if (r === 'again') this.startLesson(this.current);
+      if (r === 'list') this.showList();
+    };
+    App.resultKeys = { onTab: () => this.startLesson(this.current) };
+
+    this.el('learn-panel').innerHTML = `
+      <h2>${passed ? 'Well done!' : 'Keep going'}</h2>
+      <div class="live-grid">
+        <div class="live-tile"><div class="v accent">${stats.wpm}</div><div class="k">WPM</div></div>
+        <div class="live-tile"><div class="v">${stats.accuracy}%</div><div class="k">Accuracy</div></div>
+        <div class="live-tile"><div class="v">${p.bestWpm}</div><div class="k">Best WPM</div></div>
+        <div class="live-tile"><div class="v">${p.attempts}</div><div class="k">Attempts</div></div>
+      </div>
+      <p class="hint">${passed ? 'Lesson completed. Repeat it any time to push your speed.' : `Slow down a little — accuracy builds muscle memory.`}</p>`;
+  },
+
+  cleanup() {
+    App.deactivate();
+    App.resultKeys = null;
+    this.view?.destroy();
+    this.view = this.session = null;
+  },
+
+  refresh() { if (!this.session) this.showList(); },
+};
+
+</script>
+  <script>
+/* ---- js/stats.js ---- */
+/* =========================================================
+   Statistics tab — KPIs, WPM/accuracy trends, key heatmap, history
+   ========================================================= */
+const Stats = {
+  range: 30,
+  kind: 'all',
+
+  init() {
+    this._seg('stats-range', String(this.range), v => { this.range = +v; this.render(); });
+    this._seg('stats-kind', this.kind, v => { this.kind = v; this.render(); });
+    let t;
+    window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => App.route === 'stats' && this.render(), 150); });
+  },
+
+  _seg(id, current, onPick) {
+    const seg = document.getElementById(id);
+    const set = v => seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+    set(current);
+    seg.onclick = e => { const b = e.target.closest('button'); if (b) { set(b.dataset.v); onPick(b.dataset.v); } };
+  },
+
+  filtered() {
+    const since = this.range ? Date.now() - this.range * 864e5 : 0;
+    return Store.data.sessions.filter(s =>
+      new Date(s.date).getTime() >= since && (this.kind === 'all' || s.kind === this.kind));
+  },
+
+  render() {
+    const body = document.getElementById('stats-body');
+    const name = Store.data.settings.name.trim();
+    document.querySelector('.stats-card h1').textContent = name ? `Statistics · ${name}` : 'Statistics';
+    const list = this.filtered();
+    if (!list.length) {
+      body.innerHTML = `<div class="empty">No sessions in this range yet.<br>Head to <a href="#start" style="color:var(--accent)">Start</a> or <a href="#learn" style="color:var(--accent)">Learn</a> and type something!</div>`;
+      return;
+    }
+    const avg = k => list.reduce((a, s) => a + s[k], 0) / list.length;
+    const best = Math.max(...list.map(s => s.wpm));
+    const totalSec = list.reduce((a, s) => a + s.seconds, 0);
+    const totalChars = list.reduce((a, s) => a + s.correctChars, 0);
+    const recent = list.slice(-10);
+    const recentAvg = recent.reduce((a, s) => a + s.wpm, 0) / recent.length;
+
+    body.innerHTML = `
+      <div class="kpis">
+        ${tile(list.length, 'Sessions')}
+        ${tile(Math.round(avg('wpm')), 'Avg WPM')}
+        ${tile(best, 'Best WPM')}
+        ${tile(Math.round(recentAvg), 'Avg WPM (last 10)')}
+        ${tile(avg('accuracy').toFixed(1) + '%', 'Avg accuracy')}
+        ${tile(fmtDuration(totalSec), 'Time typing')}
+        ${tile(totalChars.toLocaleString(), 'Correct characters')}
+      </div>
+      <div class="chart-grid">
+        <div class="chart-box"><h3>Speed <small>WPM per session</small></h3><div id="ch-wpm"></div></div>
+        <div class="chart-box"><h3>Accuracy <small>% per session</small></h3><div id="ch-acc"></div></div>
+      </div>
+      <div class="chart-box" style="margin-bottom:22px">
+        <h3>Problem keys <small>error rate per key · all time</small></h3>
+        <div id="heat-kb"></div>
+        <div class="heat-scale"><span>fewer errors</span><span class="bar"></span><span>more errors</span></div>
+      </div>
+      <h3>History</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Mode</th><th>Text / lesson</th><th class="num">WPM</th><th class="num">Raw</th><th class="num">Accuracy</th><th class="num">Time</th></tr></thead>
+          <tbody>${list.slice().reverse().slice(0, 50).map(s => `
+            <tr><td>${fmtDate(s.date)}</td><td>${MODE_NAMES[s.mode] || s.mode}${s.timeLimit ? ` ${s.timeLimit}s` : ''}</td>
+            <td style="max-width:260px;overflow:hidden;text-overflow:ellipsis">${escapeHtml(s.textTitle || '')}</td>
+            <td class="num">${s.wpm}</td><td class="num">${s.raw}</td><td class="num">${s.accuracy}%</td><td class="num">${fmtTime(s.seconds)}</td></tr>`).join('')}
+          </tbody>
+        </table>
+      </div>`;
+
+    const pts = list.map((s, i) => ({ x: i, y: s.wpm, label: fmtDate(s.date, true), s }));
+    const tip = p => `<b>${p.s.wpm} wpm</b> · ${p.s.accuracy}%<br>${MODE_NAMES[p.s.mode] || p.s.mode} · ${fmtDate(p.s.date)}`;
+    lineChart(document.getElementById('ch-wpm'), pts, { yMin: 0, tip, aria: 'WPM per session' });
+    const accPts = list.map((s, i) => ({ x: i, y: s.accuracy, label: fmtDate(s.date, true), s }));
+    const minAcc = Math.min(...accPts.map(p => p.y));
+    lineChart(document.getElementById('ch-acc'), accPts, {
+      yMin: Math.max(0, Math.floor((minAcc - 2) / 5) * 5), yMax: 100, ySuffix: '%', tip, aria: 'Accuracy per session',
+    });
+
+    const kb = new Keyboard(document.getElementById('heat-kb'), { layout: Store.data.settings.layout, fingers: false, heat: true, legend: false });
+    kb.applyHeat(Store.data.keyStats, Tooltip);
+  },
+};
+
+function tile(v, k) { return `<div class="stat-tile"><div class="v">${v}</div><div class="k">${k}</div></div>`; }
+
+function fmtDate(iso, short = false) {
+  const d = new Date(iso);
+  return short
+    ? d.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' })
+    : d.toLocaleString(undefined, { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+}
+
+function fmtDuration(sec) {
+  if (sec < 60) return `${Math.round(sec)}s`;
+  const h = Math.floor(sec / 3600), m = Math.round((sec % 3600) / 60);
+  return h ? `${h}h ${m}m` : `${m}m`;
+}
+
+</script>
+  <script>
+/* ---- js/settings.js ---- */
+/* =========================================================
+   Settings tab — profile, appearance, typing, lessons, data
+   Built from a declarative list so adding a setting is one line.
+   ========================================================= */
+const SETTINGS_SCHEMA = [
+  { section: 'Profile', desc: 'Shown on your stats', items: [
+    { key: 'name', label: 'Name', type: 'text', placeholder: 'Your name' },
+  ]},
+  { section: 'Appearance', desc: 'Look & feel', items: [
+    { key: 'theme', label: 'Theme', type: 'seg', options: [['dark', 'Dark'], ['light', 'Light'], ['system', 'System']] },
+    { key: 'fontSize', label: 'Text size', hint: 'Typing area font size', type: 'range', min: 18, max: 40, step: 1, unit: 'px' },
+    { key: 'caret', label: 'Caret style', type: 'seg', options: [['line', 'Line'], ['block', 'Block'], ['underline', 'Underline']] },
+    { key: 'smoothCaret', label: 'Smooth caret', hint: 'Animate the caret between letters', type: 'switch' },
+  ]},
+  { section: 'Typing', desc: 'Behaviour during sessions', items: [
+    { key: 'layout', label: 'Keyboard layout', hint: 'Used for lessons, on-screen keyboard and heatmap', type: 'seg', options: [['qwertz', 'QWERTZ (DE)'], ['qwerty', 'QWERTY (US)']] },
+    { key: 'strict', label: 'Strict mode', hint: 'Wrong keys are not accepted — you must hit the right one', type: 'switch' },
+    { key: 'showKeyboardTraining', label: 'Keyboard in training', hint: 'Show the on-screen keyboard on the Start tab too', type: 'switch' },
+    { key: 'sound', label: 'Error sound', hint: 'Short beep on a wrong key', type: 'switch' },
+  ]},
+  { section: 'Lessons', desc: 'Learn tab', items: [
+    { key: 'lessonAccuracy', label: 'Accuracy goal', hint: 'Needed to complete a lesson', type: 'range', min: 80, max: 100, step: 1, unit: '%' },
+    { key: 'lessonLength', label: 'Lesson length', hint: 'Words per lesson', type: 'range', min: 10, max: 80, step: 5, unit: ' words' },
+  ]},
+];
+
+const Settings = {
+  init() { this.render(); },
+
+  render() {
+    const S = Store.data.settings;
+    const body = document.getElementById('settings-body');
+    const rows = SETTINGS_SCHEMA.map(sec => `
+      <div class="set-section">
+        <h3>${sec.section}<small>${sec.desc}</small></h3>
+        <div>${sec.items.map(it => `
+          <div class="set-row">
+            <span>${it.label}${it.hint ? `<small>${it.hint}</small>` : ''}</span>
+            ${this.control(it, S[it.key])}
+          </div>`).join('')}
+        </div>
+      </div>`).join('');
+
+    body.innerHTML = `
+      <div class="main-head"><h1>Settings</h1></div>
+      ${rows}
+      <div class="set-section">
+        <h3>Data<small>Where your progress is stored</small></h3>
+        <div>
+          <div class="set-row"><span>Storage<small>${escapeHtml(Store.mode === 'folder' ? `Folder “${Store.dirHandle.name}” → ${DB_FILE}` : 'Browser storage (localStorage)')}</small></span>
+            <button class="btn btn-ghost btn-sm" data-act="switch">Switch storage…</button></div>
+          <div class="set-row"><span>Export<small>Download the whole database as JSON</small></span>
+            <button class="btn btn-ghost btn-sm" data-act="export">Export JSON</button></div>
+          <div class="set-row"><span>Import<small>Replace current data with a JSON export</small></span>
+            <button class="btn btn-ghost btn-sm" data-act="import">Import JSON</button></div>
+          <div class="set-row"><span>Reset statistics<small>Deletes sessions, lesson progress and key stats. Settings and texts stay.</small></span>
+            <button class="btn btn-danger btn-sm" data-act="reset">Reset…</button></div>
+        </div>
+      </div>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>`;
+
+    body.oninput = body.onchange = e => this.onChange(e);
+    body.onclick = e => this.onClick(e);
+    document.getElementById('import-file').onchange = e => this.importFile(e.target.files[0]);
+  },
+
+  control(it, v) {
+    const k = it.key;
+    switch (it.type) {
+      case 'text':
+        return `<input class="input" data-key="${k}" value="${escapeHtml(v)}" placeholder="${it.placeholder || ''}">`;
+      case 'switch':
+        return `<label class="switch"><input type="checkbox" data-key="${k}" ${v ? 'checked' : ''}><span></span></label>`;
+      case 'range':
+        return `<span style="display:flex;align-items:center;gap:10px"><input type="range" data-key="${k}" min="${it.min}" max="${it.max}" step="${it.step}" value="${v}">
+          <output class="muted" style="min-width:70px;font-family:var(--font-mono)">${v}${it.unit}</output></span>`;
+      case 'seg':
+        return `<div class="seg seg-sm" data-seg="${k}">${it.options.map(([val, lbl]) =>
+          `<button data-v="${val}" class="${val === v ? 'on' : ''}">${lbl}</button>`).join('')}</div>`;
+    }
+    return '';
+  },
+
+  onChange(e) {
+    const t = e.target;
+    const key = t.dataset?.key;
+    if (!key) return;
+    const it = SETTINGS_SCHEMA.flatMap(s => s.items).find(i => i.key === key);
+    let v = t.type === 'checkbox' ? t.checked : t.value;
+    if (it.type === 'range') {
+      v = +v;
+      t.nextElementSibling.textContent = v + it.unit;
+    }
+    this.set(key, v);
+  },
+
+  onClick(e) {
+    const seg = e.target.closest('[data-seg] button');
+    if (seg) {
+      const wrap = seg.parentElement;
+      wrap.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === seg));
+      this.set(wrap.dataset.seg, seg.dataset.v);
+      return;
+    }
+    const act = e.target.closest('[data-act]')?.dataset.act;
+    if (act === 'switch') App.logout();
+    if (act === 'export') this.exportJson();
+    if (act === 'import') document.getElementById('import-file').click();
+    if (act === 'reset' && confirm('Delete all sessions, lesson progress and key statistics?')) {
+      Object.assign(Store.data, { sessions: [], lessons: {}, keyStats: {} });
+      Store.save();
+      App.toast('Statistics reset');
+    }
+  },
+
+  set(key, v) {
+    Store.data.settings[key] = v;
+    Store.save();
+    App.applySettings();
+    if (key === 'layout') { Learn.refresh(); }
+  },
+
+  exportJson() {
+    const blob = new Blob([JSON.stringify(Store.data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `typeflow-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  },
+
+  async importFile(file) {
+    if (!file) return;
+    try {
+      const data = JSON.parse(await file.text());
+      if (typeof data !== 'object' || !data.settings) throw new Error('Not a TypeFlow export');
+      if (!confirm('Replace all current data with this file?')) return;
+      await Store.replaceData(data);
+      App.reloadModules();
+      App.toast('Data imported');
+    } catch (err) {
+      alert('Import failed: ' + err.message);
+    }
+  },
+};
+
+</script>
+  <script>
+/* ---- js/app.js ---- */
+/* =========================================================
+   App — login, routing, keyboard input routing, shared helpers
+   ========================================================= */
+const App = {
+  route: 'start',
+  active: null,        // { session, view, onTab, onEscape } while typing
+  resultKeys: null,    // { onTab } while a result screen is shown
+  _modulesReady: false,
+
+  /* ---------- boot & login ---------- */
+  async boot() {
+    // until a DB is loaded, follow the system theme
+    if (!Store.data) document.documentElement.dataset.themeResolved = 'dark';
+    const msg = document.getElementById('login-msg');
+    const btnFolder = document.getElementById('btn-folder');
+    const btnResume = document.getElementById('btn-resume');
+    const btnLocal = document.getElementById('btn-local');
+
+    if (!Store.supportsFolder) {
+      btnFolder.disabled = true;
+      msg.textContent = 'This browser cannot open folders (use Chrome or Edge). Browser storage still works.';
+    }
+    const remembered = await Store.rememberedFolder();
+    if (remembered) {
+      btnResume.hidden = false;
+      btnResume.textContent = `Continue with “${remembered.name}”`;
+      btnFolder.className = 'btn btn-ghost';
+      btnFolder.textContent = 'Choose another folder';
+    }
+
+    const run = async fn => {
+      msg.textContent = '';
+      try { await fn(); this.enter(); }
+      catch (err) {
+        if (err.name === 'AbortError') return;          // user closed the picker
+        console.error(err);
+        msg.textContent = err.name === 'SecurityError'
+          ? 'Folder access is blocked here (embedded page). Open index.html directly in Chrome/Edge, or use browser storage.'
+          : err.message;
+      }
+    };
+    btnResume.onclick = () => run(() => Store.resumeFolder(remembered));
+    btnFolder.onclick = () => run(() => Store.pickFolder());
+    btnLocal.onclick = () => run(async () => Store.useLocal());
+    Store.onSaveError = () => this.toast('⚠ Could not save to the folder — check permissions');
+  },
+
+  enter() {
+    document.getElementById('login').hidden = true;
+    document.getElementById('app').hidden = false;
+    document.getElementById('nav-storage').textContent = Store.locationLabel;
+    document.getElementById('nav-storage').onclick = () => this.logout();
+    this.applySettings();
+
+    if (!this._modulesReady) {
+      this._modulesReady = true;
+      Training.init(); Learn.init(); Stats.init(); Settings.init();
+      this.initInput();
+      window.addEventListener('hashchange', () => this.go(location.hash.slice(1)));
+      matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => this.applySettings());
+    } else {
+      this.reloadModules();
+    }
+    this.go(location.hash.slice(1) || 'start');
+  },
+
+  /** Back to the login screen (switch folder / storage). */
+  async logout() {
+    this.deactivate();
+    await Store.saveNow();
+    document.getElementById('app').hidden = true;
+    document.getElementById('login').hidden = false;
+    this.boot();
+  },
+
+  /** Rebuild module UIs after the data source changed (import, folder switch). */
+  reloadModules() {
+    this.applySettings();
+    Training.cleanupSession(); Training.showState('idle');
+    Training.init(); Learn.init(); Settings.render();
+    if (this.route === 'stats') Stats.render();
+  },
+
+  /* ---------- routing ---------- */
+  go(route) {
+    if (!['start', 'learn', 'stats', 'settings'].includes(route)) route = 'start';
+    // leaving a page cancels a running session there
+    if (this.route !== route && this.active) {
+      if (this.route === 'start') Training.stop();
+      if (this.route === 'learn') Learn.showList();
+    }
+    this.route = route;
+    document.querySelectorAll('.page').forEach(p => p.classList.toggle('active', p.dataset.page === route));
+    document.querySelectorAll('.nav-link').forEach(a => a.classList.toggle('active', a.dataset.route === route));
+    if (route === 'stats') Stats.render();
+    if (route === 'settings') Settings.render();
+    if (location.hash.slice(1) !== route) history.replaceState(null, '', '#' + route);
+  },
+
+  /* ---------- settings → DOM ---------- */
+  applySettings() {
+    const S = Store.data.settings;
+    const root = document.documentElement;
+    const dark = S.theme === 'dark' || (S.theme === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+    root.dataset.theme = S.theme === 'system' ? '' : S.theme;
+    root.dataset.themeResolved = dark ? 'dark' : 'light';
+    root.style.setProperty('--type-size', S.fontSize + 'px');
+  },
+
+  /* ---------- keyboard input ---------- */
+  initInput() {
+    const sink = document.getElementById('key-sink');
+    this.sink = sink;
+
+    sink.addEventListener('input', e => {
+      const a = this.active;
+      const text = e.data ?? sink.value;
+      sink.value = '';
+      if (!a || e.inputType === 'insertLineBreak' || !text) return;
+      for (const ch of text) a.session.input(ch === '\n' ? ' ' : ch);
+    });
+
+    sink.addEventListener('keydown', e => {
+      const a = this.active;
+      if (!a) return;
+      if (e.key === 'Backspace') { e.preventDefault(); a.session.backspace(e.ctrlKey || e.altKey || e.metaKey); }
+      else if (e.key === 'Tab') { e.preventDefault(); a.onTab?.(); }
+      else if (e.key === 'Escape') { e.preventDefault(); a.onEscape?.(); }
+      else if (e.key === 'Enter') { e.preventDefault(); }
+    });
+    sink.addEventListener('focus', () => this.active?.view.setFocused(true));
+    sink.addEventListener('blur', () => this.active?.view.setFocused(false));
+
+    // typing anywhere (outside form fields) re-focuses the sink; Tab on a result restarts
+    document.addEventListener('keydown', e => {
+      const inField = e.target.closest?.('input, textarea, select, [contenteditable]') && e.target !== sink;
+      if (inField) return;
+      if (this.active && e.target !== sink && !e.ctrlKey && !e.metaKey) {
+        if (e.key === 'Escape') { this.active.onEscape?.(); return; }
+        if (e.key === 'Tab') { e.preventDefault(); this.active.onTab?.(); return; }
+        this.focusSink();
+      } else if (!this.active && this.resultKeys && e.key === 'Tab') {
+        e.preventDefault();
+        this.resultKeys.onTab();
+      }
+    });
+  },
+
+  focusSink() { this.sink?.focus({ preventScroll: true }); },
+
+  /** Makes a session receive keyboard input. */
+  activate(a) {
+    this.active = a;
+    this.resultKeys = null;
+    this.sink.value = '';
+    this.focusSink();
+    a.view.setFocused(document.activeElement === this.sink);
+  },
+
+  deactivate() {
+    this.active = null;
+    if (document.activeElement === this.sink) this.sink.blur();
+  },
+
+  /* ---------- persistence of finished sessions ---------- */
+  recordSession(session, extra) {
+    const st = session.stats();
+    Store.data.sessions.push({
+      id: uid(),
+      date: new Date().toISOString(),
+      ...extra,
+      wpm: st.wpm, raw: st.raw, accuracy: st.accuracy, errors: st.errors,
+      correctChars: st.correctChars, incorrectChars: st.incorrectChars,
+      keystrokes: st.keystrokes, seconds: st.seconds,
+      samples: session.samples.map(s => s.wpm),
+    });
+    const ks = Store.data.keyStats;
+    for (const [ch, s] of Object.entries(session.keyStats)) {
+      const t = (ks[ch] ||= { hits: 0, misses: 0 });
+      t.hits += s.hits; t.misses += s.misses;
+    }
+    Store.save();
+  },
+
+  /* ---------- toast ---------- */
+  toast(text) {
+    let t = document.getElementById('toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.className = 'tooltip';
+      t.style.cssText = 'left:50%;bottom:24px;top:auto;transform:translateX(-50%);font-size:14px;padding:10px 16px';
+      document.body.appendChild(t);
+    }
+    t.textContent = text;
+    t.hidden = false;
+    clearTimeout(this._toastT);
+    this._toastT = setTimeout(() => { t.hidden = true; }, 2600);
+  },
+};
+
+App.boot();
+
+</script>
+</body>
+</html>
