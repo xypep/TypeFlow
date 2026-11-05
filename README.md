@@ -7,7 +7,7 @@ Ein Tipptrainer im Browser: beliebigen Text einfügen (z. B. eine Wikipedia-Seit
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-Browser%20(Chrome%20%7C%20Edge)-lightgrey)
-![License](https://img.shields.io/badge/license-[LIZENZ]-green)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -33,6 +33,7 @@ Ein Tipptrainer im Browser: beliebigen Text einfügen (z. B. eine Wikipedia-Seit
 - [Roadmap](#roadmap)
 - [Lizenz](#lizenz)
 - [Credits](#credits)
+- [Weiterentwicklung mit KI](#weiterentwicklung-mit-ki)
 
 ---
 
@@ -214,7 +215,7 @@ Fehlende Felder werden beim Laden mit Standardwerten ergänzt, ältere Dateien f
 
 ## Lizenz
 
-Dieses Projekt steht unter der [LIZENZ]-Lizenz – siehe [LICENSE](LICENSE).
+Dieses Projekt steht unter der MIT-Lizenz – siehe [LICENSE](LICENSE).
 
 ---
 
@@ -225,3 +226,9 @@ Dieses Projekt steht unter der [LIZENZ]-Lizenz – siehe [LICENSE](LICENSE).
 - [Playwright](https://playwright.dev/): E2E-Tests
 - Node.js `node:test`: Unit-Tests
 - Entwickelt mit Unterstützung von Claude (Anthropic)
+
+---
+
+## Weiterentwicklung mit KI
+
+[`AGENTS.md`](AGENTS.md) beschreibt Architektur, Regeln, typische Aufgaben und Stolperfallen, damit ein KI-Assistent direkt weitermachen kann. Claude Code lädt sie automatisch über [`CLAUDE.md`](CLAUDE.md).
