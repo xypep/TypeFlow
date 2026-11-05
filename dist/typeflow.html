@@ -2290,7 +2290,7 @@ const App = {
         if (err.name === 'AbortError') return;          // user closed the picker
         console.error(err);
         msg.textContent = err.name === 'SecurityError'
-          ? 'Folder access is blocked here (embedded page). Open index.html directly in Chrome/Edge, or use browser storage.'
+          ? 'Folder access is blocked here (embedded page). Open the file directly in Chrome/Edge, or use browser storage.'
           : err.message;
       }
     };

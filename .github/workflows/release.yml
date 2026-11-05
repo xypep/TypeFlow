@@ -1,0 +1,41 @@
+# Creates a GitHub Release with dist/typeflow.html when a version tag is pushed.
+#   git tag v1.0.1 && git push origin v1.0.1
+# Release notes: .github/release-notes/<tag>.md (falls back to auto-generated notes).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build single-file version
+        run: npm run build
+
+      - name: Check that the committed dist/typeflow.html is up to date
+        # the banner line contains the build date, so it is ignored
+        run: git diff --exit-code -I 'single-file build' -- dist/typeflow.html
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          NOTES=".github/release-notes/${TAG}.md"
+          if [ -f "$NOTES" ]; then NOTE_ARGS=(--notes-file "$NOTES"); else NOTE_ARGS=(--generate-notes); fi
+          gh release create "$TAG" dist/typeflow.html \
+            --title "TypeFlow ${TAG}" "${NOTE_ARGS[@]}" --latest

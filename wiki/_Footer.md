@@ -1,0 +1,1 @@
+TypeFlow · [Repository](https://github.com/xypep/TypeFlow) · [Releases](https://github.com/xypep/TypeFlow/releases) · MIT-Lizenz · Diese Seiten werden aus [`wiki/`](https://github.com/xypep/TypeFlow/tree/main/wiki) generiert, Änderungen bitte dort.

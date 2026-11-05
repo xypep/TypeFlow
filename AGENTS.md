@@ -54,6 +54,9 @@ TypeFlow/
 │  ├─ *.test.js            # Unit-Tests (node:test)
 │  └─ e2e/smoke.js         # Playwright-Smoke-Test (Quellcode via http oder Single-File via file://)
 ├─ docs/images/            # Screenshots fürs README
+├─ wiki/                   # Quelle des GitHub-Wikis (Deutsch), wird per Action veröffentlicht
+├─ .github/workflows/      # release.yml (Tag v* → Release mit typeflow.html), wiki.yml (wiki/ → GitHub-Wiki)
+├─ .github/release-notes/  # Release-Notes pro Tag, z. B. v1.0.0.md
 ├─ README.md · LICENSE (MIT) · AGENTS.md · CLAUDE.md · package.json · .gitignore
 ```
 
@@ -217,7 +220,7 @@ python -m http.server 8000   # manuell testen → http://localhost:8000
 - [ ] `npm test` grün
 - [ ] `npm run build` ausgeführt, `dist/typeflow.html` mit committet
 - [ ] bei UI-Änderungen: `npm run test:e2e` und `npm run test:e2e:single` grün, Screenshot in **beiden** Themes angesehen (`SCREENSHOTS=1`)
-- [ ] README aktualisiert, wenn sich Features, Hotkeys, Settings oder das DB-Format geändert haben
+- [ ] README **und** die passenden Seiten in `wiki/` aktualisiert, wenn sich Features, Hotkeys, Settings, Texte in der UI oder das DB-Format geändert haben
 - [ ] keine festen Farben, keine neuen Abhängigkeiten, keine ES-Module
 
 ---
@@ -237,7 +240,8 @@ python -m http.server 8000   # manuell testen → http://localhost:8000
 - Eingefügter Text wird zu einer Zeile zusammengefasst (`TextPrep.clean` ersetzt alle Whitespace-Folgen durch ein Leerzeichen). Zeilenumbrüche als `Enter` werden nicht unterstützt.
 - Die Wortliste richtet sich nach dem Layout (`qwertz` → Deutsch, `qwerty` → Englisch). Die Umlaut-Lektion gibt es nur bei QWERTZ.
 - Ohne Internet werden die Systemschriften statt Inter / JetBrains Mono genutzt.
-- Releases: `v1.0.0` ist das erste. Für ein neues Release erst `npm run build`, die `version` in `package.json` und die Badge im README anheben, dann ein Release mit `dist/typeflow.html` als Asset erstellen.
+- **Releases** laufen über `.github/workflows/release.yml`: `version` in `package.json` und die README-Badge anheben, `npm run build`, committen, optional `.github/release-notes/vX.Y.Z.md` anlegen, dann `git tag vX.Y.Z && git push origin vX.Y.Z`. Die Action testet, prüft, dass `dist/typeflow.html` aktuell ist, und erstellt das Release. Claude-Code-Cloud-Sessions dürfen Releases nicht direkt über die API anlegen, deshalb der Umweg über die Action.
+- **Wiki** wird aus `wiki/` per `.github/workflows/wiki.yml` veröffentlicht. Nie direkt im GitHub-Wiki bearbeiten, das wird überschrieben. Seitennamen = Dateinamen ohne `.md`, Links als `[Text](Seitenname)`. `_Sidebar.md` und `_Footer.md` sind die Navigation. Voraussetzung: Im Wiki muss einmalig eine erste Seite von Hand angelegt worden sein.
 - Die Roadmap im README enthält noch die Platzhalter `[GEPLANTES FEATURE]`.
 
 ### Mögliche nächste Schritte (Ideen, nicht beauftragt)

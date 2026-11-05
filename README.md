@@ -33,6 +33,7 @@ Ein Tipptrainer im Browser: beliebigen Text einfügen (z. B. eine Wikipedia-Seit
 - [Roadmap](#roadmap)
 - [Lizenz](#lizenz)
 - [Credits](#credits)
+- [Wiki](https://github.com/xypep/TypeFlow/wiki)
 - [Weiterentwicklung mit KI](#weiterentwicklung-mit-ki)
 
 ---
@@ -231,5 +232,7 @@ Dieses Projekt steht unter der MIT-Lizenz – siehe [LICENSE](LICENSE).
 ---
 
 ## Weiterentwicklung mit KI
+
+Ausführliche Anleitungen für Nutzer stehen im [Wiki](https://github.com/xypep/TypeFlow/wiki). Die Quelle liegt in [`wiki/`](wiki/).
 
 [`AGENTS.md`](AGENTS.md) beschreibt Architektur, Regeln, typische Aufgaben und Stolperfallen, damit ein KI-Assistent direkt weitermachen kann. Claude Code lädt sie automatisch über [`CLAUDE.md`](CLAUDE.md).

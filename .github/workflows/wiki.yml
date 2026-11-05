@@ -1,0 +1,46 @@
+# Publishes the Markdown files in wiki/ to the GitHub wiki of this repository.
+# One-time setup: the wiki must already exist, so create any first page once
+# on github.com (Wiki tab → "Create the first page" → Save). This action
+# then overwrites it.
+name: Wiki
+
+on:
+  push:
+    branches: [main]
+    paths: ['wiki/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wiki
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Push wiki/ to the GitHub wiki
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! git clone "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki-repo; then
+            echo "::error::Wiki repository not found. Create the first wiki page once on github.com, then re-run this workflow."
+            exit 1
+          fi
+          # mirror wiki/ into the wiki repo (pages removed in wiki/ are removed there too)
+          find wiki-repo -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r wiki/. wiki-repo/
+          cd wiki-repo
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Wiki already up to date."
+          else
+            git commit -m "Sync wiki from ${GITHUB_SHA::7}"
+            git push
+          fi
