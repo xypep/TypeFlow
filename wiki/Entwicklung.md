@@ -38,17 +38,11 @@ npm run test:e2e:single         # E2E gegen dist/typeflow.html (file://)
 
 ## Release erstellen
 
-1. `version` in `package.json` und die Badge im README anheben
-2. `npm run build`, Tests laufen lassen, committen und pushen
-3. Optional Release-Notes in `.github/release-notes/vX.Y.Z.md` anlegen (sonst werden sie automatisch erzeugt)
-4. Tag pushen:
+1. `version` in `package.json` und die Badge im README anheben (z. B. `1.0.1`)
+2. Optional Release-Notes in `.github/release-notes/v1.0.1.md` anlegen (sonst werden sie automatisch erzeugt)
+3. `npm run build`, Tests laufen lassen, committen und auf `main` pushen
 
-```bash
-git tag v1.0.1
-git push origin v1.0.1
-```
-
-Die GitHub Action **Release** führt die Tests aus, baut die Datei, prüft, dass `dist/typeflow.html` aktuell ist, und erstellt das Release mit `typeflow.html` als Download.
+Die GitHub Action **Release** erkennt die neue Version, führt die Tests aus, prüft, dass `dist/typeflow.html` aktuell ist, und erstellt Tag `v1.0.1` und das Release mit `typeflow.html` als Download. Gibt es das Release schon, macht sie nichts. Manuell starten geht unter *Actions → Release → Run workflow*.
 
 ## Dieses Wiki bearbeiten
 

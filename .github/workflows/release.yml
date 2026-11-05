@@ -1,18 +1,30 @@
-# Creates a GitHub Release with dist/typeflow.html when a version tag is pushed.
-#   git tag v1.0.1 && git push origin v1.0.1
-# Release notes: .github/release-notes/<tag>.md (falls back to auto-generated notes).
+# Creates a GitHub Release with dist/typeflow.html for the version in package.json.
+#
+#   1. bump "version" in package.json (e.g. 1.0.1), npm run build, commit, push to main
+#   2. this workflow creates tag v1.0.1 + the release (skips if it already exists)
+#
+# Release notes: .github/release-notes/v<version>.md (falls back to auto-generated notes).
+# Can also be started manually: Actions → Release → Run workflow.
 name: Release
 
 on:
   push:
-    tags: ['v*']
+    branches: [main]
+    paths: ['package.json', 'dist/typeflow.html', '.github/workflows/release.yml', '.github/release-notes/**']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
 
@@ -20,22 +32,37 @@ jobs:
         with:
           node-version: 20
 
+      - name: Read version
+        id: v
+        run: |
+          TAG="v$(node -p "require('./package.json').version")"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Release $TAG already exists – nothing to do. Bump the version in package.json for a new release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Unit tests
+        if: steps.v.outputs.exists == 'false'
         run: npm test
 
       - name: Build single-file version
+        if: steps.v.outputs.exists == 'false'
         run: npm run build
 
       - name: Check that the committed dist/typeflow.html is up to date
+        if: steps.v.outputs.exists == 'false'
         # the banner line contains the build date, so it is ignored
         run: git diff --exit-code -I 'single-file build' -- dist/typeflow.html
 
-      - name: Create release
+      - name: Create tag + release
+        if: steps.v.outputs.exists == 'false'
         env:
-          GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
+          TAG: ${{ steps.v.outputs.tag }}
         run: |
           NOTES=".github/release-notes/${TAG}.md"
           if [ -f "$NOTES" ]; then NOTE_ARGS=(--notes-file "$NOTES"); else NOTE_ARGS=(--generate-notes); fi
           gh release create "$TAG" dist/typeflow.html \
-            --title "TypeFlow ${TAG}" "${NOTE_ARGS[@]}" --latest
+            --target "$GITHUB_SHA" --title "TypeFlow ${TAG}" "${NOTE_ARGS[@]}" --latest
