@@ -1,0 +1,14 @@
+{
+  "name": "typeflow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Typing trainer: paste any text, learn touch typing, track your stats.",
+  "scripts": {
+    "start": "npx --yes http-server -p 8000 -c-1 .",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "node tests/e2e/smoke.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
+}

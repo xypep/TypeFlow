@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TypeFlow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============ LOGIN ============ -->
+  <section id="login" class="login">
+    <div class="login-card">
+      <div class="logo logo-lg">TypeFlow</div>
+      <p class="login-sub">Your progress lives in a folder you choose.<br>Pick one — TypeFlow creates or loads <code>typeflow-db.json</code> there.</p>
+      <div class="login-actions">
+        <button id="btn-resume" class="btn btn-primary btn-lg" hidden></button>
+        <button id="btn-folder" class="btn btn-primary btn-lg">Choose folder</button>
+        <button id="btn-local" class="btn btn-ghost">Continue without folder (browser storage)</button>
+      </div>
+      <p id="login-msg" class="login-msg"></p>
+    </div>
+  </section>
+
+  <!-- ============ APP ============ -->
+  <div id="app" class="app" hidden>
+    <nav class="nav">
+      <a href="#start" class="logo">TypeFlow</a>
+      <a href="#learn" class="nav-link" data-route="learn">Learn</a>
+      <a href="#start" class="nav-link" data-route="start">Start</a>
+      <a href="#stats" class="nav-link" data-route="stats">Statistics</a>
+      <a href="#settings" class="nav-link" data-route="settings">Settings</a>
+      <button id="nav-storage" class="nav-storage" title="Storage location — click to switch"></button>
+    </nav>
+
+    <!-- Hidden input that receives all keystrokes while a typing session runs (handles dead keys / IME) -->
+    <textarea id="key-sink" class="key-sink" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Typing input"></textarea>
+
+    <!-- ---------- START / TRAINING ---------- -->
+    <section class="page" data-page="start">
+      <div class="layout">
+        <main class="main card">
+          <!-- idle: paste text -->
+          <div id="train-idle">
+            <div class="main-head">
+              <h1>Training</h1>
+              <span id="text-info" class="muted"></span>
+            </div>
+            <textarea id="source-text" class="source-text" placeholder="Paste anything here — a Wikipedia article, a news story, your own text…&#10;&#10;Then pick a mode on the right and press Start."></textarea>
+            <div class="saved-row">
+              <span class="label">Saved texts</span>
+              <div id="saved-texts" class="chips"></div>
+            </div>
+          </div>
+          <!-- running -->
+          <div id="train-run" hidden>
+            <div id="train-typing"></div>
+            <div id="train-keyboard" class="kb-wrap"></div>
+          </div>
+          <!-- results -->
+          <div id="train-result" hidden></div>
+        </main>
+
+        <aside class="panel">
+          <div id="train-panel-settings">
+            <h2>Session</h2>
+            <div class="field">
+              <span class="label">Mode</span>
+              <div class="seg" id="mode-seg">
+                <button data-mode="full">Full text</button>
+                <button data-mode="random">Random</button>
+                <button data-mode="single">Single</button>
+                <button data-mode="time">Time</button>
+              </div>
+              <p id="mode-desc" class="hint"></p>
+            </div>
+            <div class="field" id="opt-words">
+              <span class="label">Words</span>
+              <div class="seg seg-sm" id="words-seg">
+                <button data-v="10">10</button><button data-v="25">25</button><button data-v="50">50</button><button data-v="100">100</button>
+              </div>
+            </div>
+            <div class="field" id="opt-time">
+              <span class="label">Duration</span>
+              <div class="seg seg-sm" id="time-seg">
+                <button data-v="15">15s</button><button data-v="30">30s</button><button data-v="60">60s</button><button data-v="120">120s</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="label">Text cleanup</span>
+              <label class="check"><input type="checkbox" id="opt-normalize"> Normalize quotes &amp; dashes</label>
+              <label class="check"><input type="checkbox" id="opt-refs"> Remove references [1]</label>
+              <label class="check"><input type="checkbox" id="opt-punct"> Remove punctuation</label>
+              <label class="check"><input type="checkbox" id="opt-lower"> Lowercase</label>
+            </div>
+            <button id="btn-start" class="btn btn-primary btn-block">Start</button>
+            <p class="hint center">Tab = restart · Esc = stop</p>
+          </div>
+          <div id="train-panel-live" hidden></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ---------- LEARN ---------- -->
+    <section class="page" data-page="learn">
+      <div class="layout">
+        <main class="main card">
+          <div id="learn-list">
+            <div class="main-head">
+              <h1>Learn touch typing</h1>
+              <span id="learn-progress" class="muted"></span>
+            </div>
+            <p class="muted">Rest your fingers on the home row (the keys with bumps: <kbd id="home-l">F</kbd> and <kbd id="home-r">J</kbd>). Each lesson adds new keys — reach the accuracy goal to complete it.</p>
+            <div id="lesson-grid" class="lesson-grid"></div>
+          </div>
+          <div id="learn-run" hidden>
+            <div class="main-head" style="justify-content:flex-start">
+              <button id="btn-learn-back" class="btn btn-ghost btn-sm">← Lessons</button>
+              <h1 id="learn-title"></h1>
+            </div>
+            <div id="learn-typing"></div>
+            <div id="learn-keyboard" class="kb-wrap"></div>
+          </div>
+          <div id="learn-result" hidden></div>
+        </main>
+        <aside class="panel" id="learn-panel"></aside>
+      </div>
+    </section>
+
+    <!-- ---------- STATISTICS ---------- -->
+    <section class="page" data-page="stats">
+      <div class="card stats-card">
+        <div class="main-head">
+          <h1>Statistics</h1>
+          <div class="filters">
+            <div class="seg seg-sm" id="stats-range">
+              <button data-v="7">7 days</button><button data-v="30">30 days</button><button data-v="0">All</button>
+            </div>
+            <div class="seg seg-sm" id="stats-kind">
+              <button data-v="all">All</button><button data-v="training">Training</button><button data-v="lesson">Lessons</button>
+            </div>
+          </div>
+        </div>
+        <div id="stats-body"></div>
+      </div>
+    </section>
+
+    <!-- ---------- SETTINGS ---------- -->
+    <section class="page" data-page="settings">
+      <div class="card settings-card" id="settings-body"></div>
+    </section>
+  </div>
+
+  <div id="tooltip" class="tooltip" hidden></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/words.js"></script>
+  <script src="js/keyboard.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/training.js"></script>
+  <script src="js/learn.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
